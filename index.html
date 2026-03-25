@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cây Huffman Thích Nghi (Vitter)</title>
+<title>Adaptive Huffman Tree (Vitter)</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -249,43 +249,43 @@ td.ord-col { color:var(--blue); }
 </head>
 <body>
 <div class="container">
-  <h1>🌿 Cây Huffman Thích Nghi</h1>
-  <div class="subtitle">Vitter's Adaptive Huffman · NYT + Swap · mã hóa tức thời từng ký tự</div>
+  <h1>🌿 Adaptive Huffman Tree</h1>
+  <!-- <div class="subtitle">Vitter's Adaptive Huffman · NYT + Swap · real-time per-character encoding</div> -->
 
   <div id="string-display"></div>
   <div id="freq-table"></div>
 
   <div class="input-row">
     <input id="char-input" class="big-input" maxlength="1" placeholder="A" autocomplete="off" spellcheck="false"/>
-    <button class="btn btn-green" onclick="addChar()">+ Thêm ↵</button>
+    <button class="btn btn-green" onclick="addChar()">+ Add ↵</button>
     <button id="btn-abra"  class="btn btn-hl" onclick="addSample('ABRACADABRA',this)">▶ ABRACADABRA</button>
     <button id="btn-miss"  class="btn btn-hl" onclick="addSample('MISSISSIPPI',this)">▶ MISSISSIPPI</button>
     <button id="btn-hello" class="btn btn-hl" onclick="addSample('HELLO WORLD',this)">▶ HELLO WORLD</button>
-    <button class="btn btn-purple" onclick="toggleLib()">📚 Thư viện</button>
-    <button class="btn btn-red"    onclick="resetAll()">✕ Xoá</button>
+    <button class="btn btn-purple" onclick="toggleLib()">📚 Library</button>
+    <button class="btn btn-red"    onclick="resetAll()">✕ Reset</button>
   </div>
 
   <!-- LIBRARY -->
   <div id="lib-panel">
     <div class="lib-header">
-      <span class="lib-title">📚 Thư viện chuỗi</span>
-      <span style="font-size:12px;color:var(--text2)">Lưu chuỗi để dùng sau</span>
+      <span class="lib-title">📚 String Library</span>
+      <span style="font-size:12px;color:var(--text2)">Save strings for later</span>
     </div>
     <div class="lib-body">
       <div class="lib-composer">
-        <div class="lib-section-label">✏️ Soạn chuỗi</div>
-        <input id="lib-name" class="lib-name-input" placeholder="Tên (tự đặt nếu để trống)" maxlength="40"/>
-        <textarea id="lib-str" class="lib-str-input" placeholder="Nhập chuỗi ký tự…" maxlength="200" oninput="libPreview()"></textarea>
-        <div class="lib-preview">Độ dài: <span id="lib-len">0</span> · Loại: <span id="lib-uniq">0</span></div>
+        <div class="lib-section-label">✏️ Compose</div>
+        <input id="lib-name" class="lib-name-input" placeholder="Name (auto if blank)" maxlength="40"/>
+        <textarea id="lib-str" class="lib-str-input" placeholder="Enter string…" maxlength="200" oninput="libPreview()"></textarea>
+        <div class="lib-preview">Length: <span id="lib-len">0</span> · Unique: <span id="lib-uniq">0</span></div>
         <div class="lib-row">
-          <button class="btn-sm btn-sm-purple" onclick="libSave()">💾 Lưu</button>
-          <button class="btn-sm btn-sm-green"  onclick="libUseComposer()">▶ Dùng ngay</button>
+          <button class="btn-sm btn-sm-purple" onclick="libSave()">💾 Save</button>
+          <button class="btn-sm btn-sm-green"  onclick="libUseComposer()">▶ Use now</button>
           <button class="btn-sm"               onclick="libClearComposer()">✕</button>
         </div>
       </div>
       <div class="lib-list">
-        <div class="lib-section-label">📁 Đã lưu (<span id="lib-count">0</span>)</div>
-        <div class="lib-items" id="lib-items"><div class="lib-empty">Chưa có chuỗi nào.</div></div>
+        <div class="lib-section-label">📁 Saved (<span id="lib-count">0</span>)</div>
+        <div class="lib-items" id="lib-items"><div class="lib-empty">No strings saved yet.</div></div>
       </div>
     </div>
   </div>
@@ -293,52 +293,52 @@ td.ord-col { color:var(--blue); }
   <!-- QUEUE -->
   <div id="queue-panel">
     <div class="queue-hdr">
-      <span>Hàng đợi</span>
-      <span class="queue-hint">Nhấn <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> để thêm ký tự tiếp theo</span>
+      <span>Queue</span>
+      <span class="queue-hint">Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character</span>
     </div>
     <div id="queue-chars"></div>
   </div>
 
   <!-- STEP LOG -->
-  <div id="step-log"><span style="color:var(--text2);font-size:13px">— nhật ký bước sẽ hiện ở đây —</span></div>
+  <div id="step-log"><span style="color:var(--text2);font-size:13px">— step log will appear here —</span></div>
 
   <div id="canvas-wrap">
     <canvas id="tree-canvas" height="280"></canvas>
-    <div id="empty-msg">Nhập ký tự để bắt đầu…</div>
+    <div id="empty-msg">Enter a character to begin…</div>
   </div>
 
   <div id="bitstream-panel">
-    <div class="panel-title">Chuỗi bit phát ra (Vitter Adaptive)</div>
+    <div class="panel-title">Encoded bitstream (Vitter Adaptive)</div>
     <div class="bitstream-row">
       <div class="bs-label">
-        <span class="tag tag-ascii">ASCII gốc</span>
-        8 bit/ký tự &nbsp;·&nbsp; <span id="ascii-len" style="color:var(--blue)">0 bits</span>
+        <span class="tag tag-ascii">Original ASCII</span>
+        8 bits/char &nbsp;·&nbsp; <span id="ascii-len" style="color:var(--blue)">0 bits</span>
       </div>
       <div class="bs-bits" id="ascii-bits"><span style="color:var(--text2);font-size:11px">—</span></div>
     </div>
     <div class="bitstream-row">
       <div class="bs-label">
-        <span class="tag tag-huff">Huffman Thích Nghi</span>
-        mã NYT + mã đường đi &nbsp;·&nbsp; <span id="huff-len" style="color:var(--leaf)">0 bits</span>
+        <span class="tag tag-huff">Adaptive Huffman</span>
+        NYT code + path code &nbsp;·&nbsp; <span id="huff-len" style="color:var(--leaf)">0 bits</span>
       </div>
       <div class="bs-bits" id="huff-bits"><span style="color:var(--text2);font-size:11px">—</span></div>
     </div>
   </div>
 
   <div class="stats-grid">
-    <div class="stat-card"><div class="lbl">Tổng ký tự</div><div class="val" id="s-total">0</div></div>
-    <div class="stat-card"><div class="lbl">Số loại</div><div class="val" id="s-unique">0</div></div>
-    <div class="stat-card"><div class="lbl">Bits ASCII</div><div class="val" id="s-raw">0</div></div>
-    <div class="stat-card"><div class="lbl">Bits Huffman</div><div class="val" id="s-huff">0</div></div>
-    <div class="stat-card green"><div class="lbl">Tiết kiệm</div><div class="val" id="s-save">—</div></div>
-    <div class="stat-card orange"><div class="lbl">Tỉ lệ nén</div><div class="val" id="s-ratio">—</div></div>
+    <div class="stat-card"><div class="lbl">Total chars</div><div class="val" id="s-total">0</div></div>
+    <div class="stat-card"><div class="lbl">Unique</div><div class="val" id="s-unique">0</div></div>
+    <div class="stat-card"><div class="lbl">ASCII bits</div><div class="val" id="s-raw">0</div></div>
+    <div class="stat-card"><div class="lbl">Huffman bits</div><div class="val" id="s-huff">0</div></div>
+    <div class="stat-card green"><div class="lbl">Saved</div><div class="val" id="s-save">—</div></div>
+    <div class="stat-card orange"><div class="lbl">Ratio</div><div class="val" id="s-ratio">—</div></div>
   </div>
 
   <div id="code-table-wrap">
-    <div class="panel-title" style="margin-bottom:9px">Bảng mã hiện tại &amp; order</div>
+    <div class="panel-title" style="margin-bottom:9px">Current codebook &amp; order</div>
     <table>
       <thead><tr>
-        <th>Ký tự</th><th>Tần suất</th><th>Mã Huffman</th><th>Độ dài</th><th>Order</th><th style="width:80px">Tần suất</th>
+        <th>Char</th><th>Freq</th><th>Huffman code</th><th>Length</th><th>Order</th><th style="width:80px">Bar</th>
       </tr></thead>
       <tbody id="code-tbody"></tbody>
     </table>
@@ -346,57 +346,52 @@ td.ord-col { color:var(--blue); }
 
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="border-color:var(--nyt);background:var(--nyt-fill)"></div>NYT (Not Yet Transmitted)</div>
-    <div class="legend-item"><div class="legend-dot" style="border-color:#5DCAA5;background:#0a3028"></div>Ký tự (leaf)</div>
-    <div class="legend-item"><div class="legend-dot" style="border-color:#AFA9EC;background:#1e1a40"></div>Nút trung gian</div>
-    <div class="legend-item"><span style="color:var(--swap);font-weight:700">⇄</span>&nbsp;= đổi chỗ xảy ra</div>
-    <div class="legend-item"><span style="color:#5b8cff;font-weight:700">0</span>&nbsp;= trái &nbsp; <span style="color:#ff6b6b;font-weight:700">1</span>&nbsp;= phải</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#5DCAA5;background:#0a3028"></div>Symbol (leaf)</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#AFA9EC;background:#1e1a40"></div>Internal node</div>
+    <div class="legend-item"><span style="color:var(--swap);font-weight:700">⇄</span>&nbsp;= swap occurred</div>
+    <div class="legend-item"><span style="color:#5b8cff;font-weight:700">0</span>&nbsp;= left &nbsp; <span style="color:#ff6b6b;font-weight:700">1</span>&nbsp;= right</div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  VITTER ADAPTIVE HUFFMAN ENGINE
+//  ADAPTIVE HUFFMAN ENGINE (FGK/Vitter)
+//  Node: {id, sym, w, ord, parent, left, right, alive}
+//  ord: giảm dần (512,511,...) — node tạo trước = ord cao = ưu tiên cao hơn
+//  findSwapTarget: tìm node ord CAO NHẤT cùng weight (không phải ancestor, không phải NYT)
 // ═══════════════════════════════════════════════════════
 
-// Each node: { id, weight, order, sym, parent, left, right }
-// NYT node: sym = null, weight = 0
-// Internal: sym = null, weight = sum of children
-// Leaf: sym = char, weight >= 1
-
-let nodes = [];      // all nodes indexed by id
-let nytNode = null;  // current NYT node
+let nodes = [];
+let nytNode = null;
 let root = null;
-let nextOrder = 0;   // order counter (increases as tree grows)
-let symMap = {};     // char -> leaf node
+let nextOrd = 512;
+let symMap = {};
 let inputStr = '';
-let encodedBits = '';  // accumulated bits output
+let encodedBits = '';   // raw 0/1 bit string
+let encodedLog = [];    // [{ch, bits, isNew}] for per-char coloring
 let logLines = [];
-let swappedNodes = new Set(); // ids that were just swapped (for flash anim)
-
+let swappedNodes = new Set();
 const COLOURS = ['b0','b1','b2','b3','b4','b5','b6','b7','b8','b9'];
 
-function mkNode(sym, weight, order) {
-  const n = { id: nodes.length, sym, weight, order, parent: null, left: null, right: null };
+function mkNode(sym, w, ord) {
+  const n = { id: nodes.length, sym, w, ord, parent: null, left: null, right: null, alive: true };
   nodes.push(n);
   return n;
 }
 
 function initTree() {
-  nodes = []; symMap = {}; inputStr = ''; encodedBits = ''; logLines = []; swappedNodes = new Set();
-  // Order GIẢM dần: node tạo trước có order CAO hơn (gần root, bên phải)
-  // Node mới thêm vào sau có order THẤP hơn (xa root, bên trái)
-  // Đảm bảo: weight cao → order cao → lên cao và bên phải
-  nextOrder = 512;
-  nytNode = mkNode(null, 0, nextOrder--);
+  nodes = []; symMap = {}; inputStr = ''; encodedBits = '';
+  encodedLog = [];
+  logLines = []; swappedNodes = new Set();
+  nextOrd = 512;
+  nytNode = mkNode(null, 0, nextOrd--);
   root = nytNode;
 }
 
-// Get path from root to node (for encoding)
 function getCode(node) {
   if (node === root) return '';
-  let bits = '';
-  let cur = node;
+  let bits = '', cur = node;
   while (cur.parent) {
     bits = (cur.parent.right === cur ? '1' : '0') + bits;
     cur = cur.parent;
@@ -404,173 +399,152 @@ function getCode(node) {
   return bits;
 }
 
-// Get all nodes with same weight as node, in order
-function sameWeightGroup(w) {
-  return nodes.filter(n => n.weight === w).sort((a,b) => b.order - a.order);
-}
-
-// Find highest-order node in same weight group (not ancestor, not NYT)
-function findSwapTarget(node) {
-  const w = node.weight;
-  // NYT không bao giờ là target (phải giữ bất biến e0 ở nhánh 0)
-  const group = nodes.filter(n =>
-    n.weight === w &&
-    n !== node &&
-    n !== node.parent &&
-    n !== nytNode
-  ).sort((a,b) => b.order - a.order);
-  return group.length ? group[0] : null;
-}
-
-// Check if a is ancestor of b
 function isAncestor(a, b) {
-  let cur = b;
-  while (cur) { if (cur === a) return true; cur = cur.parent; }
+  let c = b;
+  while (c) { if (c === a) return true; c = c.parent; }
   return false;
 }
 
-// Swap two nodes (exchange positions in tree, swap orders)
+function nodeDepth(node) {
+  let d = 0, c = node;
+  while (c.parent) { d++; c = c.parent; }
+  return d;
+}
+
+function findSwapTarget(node) {
+  const nd = nodeDepth(node);
+  return nodes.filter(n =>
+    n.alive && n.w === node.w && n !== node && n !== nytNode &&
+    !isAncestor(n, node) && !isAncestor(node, n) &&
+    nodeDepth(n) <= nd   // only swap up or same depth — never push a node deeper
+  ).sort((a, b) => b.ord - a.ord)[0] || null;
+}
+
 function swapNodes(a, b) {
   if (a === b || isAncestor(a, b) || isAncestor(b, a)) return;
-  swappedNodes.add(a.id);
+  // Only highlight the displaced node (b=target), not the incrementing node (a=cur)
   swappedNodes.add(b.id);
 
   const pa = a.parent, pb = b.parent;
-  // swap orders
-  const tmpOrd = a.order; a.order = b.order; b.order = tmpOrd;
 
-  // rewire parents
-  if (pa) { if (pa.left === a) pa.left = b; else pa.right = b; }
-  if (pb) { if (pb.left === b) pb.left = a; else pb.right = a; }
+  // Save original slot positions BEFORE modifying (avoids bug when pa===pb)
+  const aWasLeft = pa && pa.left === a;
+  const bWasLeft = pb && pb.left === b;
+
+  // Swap order values
+  const tmpOrd = a.ord; a.ord = b.ord; b.ord = tmpOrd;
+
+  // Rewire parent pointers
+  if (pa) { if (aWasLeft) pa.left = b; else pa.right = b; }
+  if (pb) { if (bWasLeft) pb.left = a; else pb.right = a; }
   a.parent = pb;
   b.parent = pa;
   if (a === root) root = b;
   else if (b === root) root = a;
 
+  logLines.push(`  <span class="lo-swap">⇄ swap</span> ${nodeLabel(a)} ↔ ${nodeLabel(b)}`);
 }
 
-// Enforce display invariant sau mỗi bước:
-// - con weight lớn hơn = right (nhánh 1)
-// - con weight bằng nhau: order cao hơn = right
-// - NYT luôn left (nhánh 0)
-function enforceInvariant(n) {
-  if (!n || !n.left || !n.right) return;
-  const l = n.left, r = n.right;
-  let swap = false;
-  if      (r === nytNode)                              swap = true;
-  else if (l === nytNode)                              swap = false;
-  else if (l.weight > r.weight)                        swap = true;
-  else if (l.weight === r.weight && l.order > r.order) swap = true;
-  if (swap) { n.left = r; n.right = l; }
-  enforceInvariant(n.left);
-  enforceInvariant(n.right);
-}
-
-// Increment procedure (Vitter): walk up from node to root
 function incrementNode(node) {
   let cur = node;
   while (cur) {
-    // Chỉ swap và tăng nếu KHÔNG phải NYT
-    // (NYT luôn weight=0, không swap, không tăng)
     if (cur !== nytNode) {
-      // Tìm node có order cao nhất cùng weight để swap
       const target = findSwapTarget(cur);
-      if (target && target !== cur.parent) {
-        swapNodes(cur, target);
-        logLines.push(`  <span class="lo-swap">⇄ Đổi chỗ</span> ${nodeLabel(cur)} (order ${cur.order}) ↔ ${nodeLabel(target)} (order ${target.order})`);
-      }
-      // Tăng weight: leaf/internal đều tăng +1 đúng theo Vitter
-      cur.weight++;
-      logLines.push(`  <span class="lo-inc">↑ Tăng weight</span> ${nodeLabel(cur)} → ${cur.weight}`);
+      if (target) swapNodes(cur, target);
+      cur.w++;
+      logLines.push(`  <span class="lo-inc">↑ inc</span> ${nodeLabel(cur)} w=${cur.w}`);
     }
     cur = cur.parent;
   }
 }
 
 function nodeLabel(n) {
-  if (n.sym !== null) return `'<span class="lo-char">${n.sym === ' ' ? '␣' : n.sym}</span>'`;
   if (n === nytNode) return '<span class="lo-new">NYT</span>';
-  return `[${n.weight}]`;
+  if (n.sym) return `'<span class="lo-char">${n.sym === ' ' ? '␣' : n.sym}</span>'(${n.w})`;
+  return `[INT ${n.w}]`;
 }
 
-// Process one character through Vitter algorithm
 function processChar(ch) {
   swappedNodes = new Set();
   logLines = [];
-  logLines.push(`▶ Ký tự: <span class="lo-char">${ch === ' ' ? '␣' : ch}</span>`);
-
+  logLines.push(`▶ <span class="lo-char">${ch === ' ' ? '␣' : ch}</span>`);
   let code = '';
+  const isNewChar = !symMap[ch];  // captured before symMap is assigned
 
   if (symMap[ch]) {
-    // Already seen: encode path to leaf
-    const leaf = symMap[ch];
-    code = getCode(leaf);
-    logLines.push(`  Đã có trong cây → mã đường đi: <span class="lo-code">${code||'(gốc)'}</span>`);
-    incrementNode(leaf);
+    code = getCode(symMap[ch]);
+    logLines.push(`  Existing → code: <span class="lo-code">${code || '(root)'}</span>`);
+    incrementNode(symMap[ch]);
   } else {
-    // New character: encode path to NYT + 8-bit ASCII
     const nytCode = getCode(nytNode);
-    const asciiCode = ch.charCodeAt(0).toString(2).padStart(8,'0');
-    code = nytCode + asciiCode;
-    logLines.push(`  Ký tự mới → NYT path: <span class="lo-code">${nytCode||'(gốc)'}</span> + ASCII: <span class="lo-code">${asciiCode}</span>`);
+    const ascii = ch.charCodeAt(0).toString(2).padStart(8, '0');
+    code = nytCode + ascii;
+    logLines.push(`  New → NYT:<span class="lo-code">${nytCode || '(ε)'}</span> + <span class="lo-code">${ascii}</span>`);
 
-    // Expand NYT: create new NYT and new leaf
     const oldNYT = nytNode;
     const oldParent = oldNYT.parent;
-    const oldOrder = oldNYT.order;
+    oldNYT.alive = false;  // retire old NYT
 
-    // internal node kế thừa order của NYT cũ (thế chỗ NYT trong cây)
-    const internal = mkNode(null, 0, oldOrder);
-    const newNYT = mkNode(null, 0, nextOrder--);  // NYT mới — order thấp hơn, trái
-    const leaf   = mkNode(ch,   0, nextOrder--);  // leaf mới — order thấp nhất, phải
+    const internal = mkNode(null, 0, nextOrd--);
+    const newNYT   = mkNode(null, 0, nextOrd--);
+    const leaf     = mkNode(ch,   0, nextOrd--);
 
-    // NYT mới luôn là con trái (nhánh 0), leaf mới là con phải (nhánh 1)
+    // new NYT at left (branch 0), new leaf at right (branch 1)
     internal.left  = newNYT;
     internal.right = leaf;
     newNYT.parent  = internal;
     leaf.parent    = internal;
 
-    // internal thế chỗ NYT cũ trong cây
     if (oldParent) {
-      // NYT luôn là con trái (nhánh 0) của cha → internal vào đúng vị trí đó
+      // old NYT was always left child of its parent
       oldParent.left = internal;
       internal.parent = oldParent;
     } else {
-      // NYT là root (xảy ra với ký tự đầu tiên) → internal trở thành root mới
       root = internal;
     }
 
     nytNode = newNYT;
     symMap[ch] = leaf;
+    logLines.push(`  Split NYT → [e0 | '${ch === ' ' ? '␣' : ch}']`);
 
-    logLines.push(`  Tách NYT → [NYT mới] + nút '${ch === ' ' ? '␣' : ch}'`);
-
-    // Theo Vitter: leaf mới và internal cha trực tiếp của nó
-    // được khởi tạo weight=0, sau đó tăng lên 1 KHÔNG qua swap
-    // (vì cả hai vừa tạo, không có node nào cùng nhóm để swap)
-    leaf.weight = 1;
-    internal.weight = 1;
-    // Tiếp tục increment từ cha của internal lên root (có swap nếu cần)
-    if (internal.parent) {
-      incrementNode(internal.parent);
-    }
+    // increment from leaf (w=0) — naturally propagates correctly
+    incrementNode(leaf);
   }
 
-  encodedBits += code;
+  // Store actual bits into encodedBits and encodedLog
+  const pureBits = code;  // code is pure 0/1 bits (path or path+ASCII)
+  encodedBits += pureBits;
+  encodedLog.push({ ch, bits: pureBits, isNew: isNewChar });
   inputStr += ch;
-  logLines.push(`  Bits phát ra: <span class="lo-code">${code}</span> (tổng ${encodedBits.length} bits)`);
-  // Enforce: weight lớn hơn luôn ở right (nhánh 1) toàn bộ cây
-  enforceInvariant(root);
+  logLines.push(`  Bits: <span class="lo-code">${code}</span>`);
+  enforceDisplay(root);
+  // After enforceDisplay, nodes may have shifted left/right
+  // Rebuild swappedNodes dựa trên node nào thực sự đổi vị trí trong cây
+  // (enforceDisplay chỉ đổi pointer, không đổi node identity)
+  // → swappedNodes still valid since we track node.id, not position
 }
 
-// Get code of a leaf from current tree
+// Display order: higher weight → right; higher ord → right (tie); NYT always left
+function enforceDisplay(n) {
+  if (!n || !n.left || !n.right) return;
+  const l = n.left, r = n.right;
+  let doSwap = false;
+  if      (r === nytNode)                          doSwap = true;
+  else if (l === nytNode)                          doSwap = false;
+  else if (l.w > r.w)                              doSwap = true;
+  else if (l.w === r.w && l.ord > r.ord)           doSwap = true;
+  if (doSwap) { n.left = r; n.right = l; }
+  enforceDisplay(n.left);
+  enforceDisplay(n.right);
+}
+
 function getCurrentCodes() {
   const codes = {};
   function walk(n, path) {
     if (!n) return;
     if (n.sym !== null) { codes[n.sym] = path; return; }
     if (n === nytNode) return;
-    walk(n.left, path + '0');
+    walk(n.left,  path + '0');
     walk(n.right, path + '1');
   }
   walk(root, '');
@@ -717,23 +691,20 @@ function drawNode(x, y, node) {
   ctx.strokeStyle=stroke; ctx.lineWidth=lw; ctx.stroke();
   ctx.textAlign='center'; ctx.textBaseline='middle';
 
-  // order number (small, top-right)
-  ctx.font='400 9px monospace'; ctx.fillStyle='#666688';
-  ctx.fillText(node.order, x+16, y-16);
 
   if (isNYT) {
-    ctx.font='700 11px monospace'; ctx.fillStyle='#ff9f43';
+    ctx.font='700 15px monospace'; ctx.fillStyle='#ff9f43';
     ctx.fillText('NYT', x, y-5);
-    ctx.font='400 10px monospace'; ctx.fillStyle='#cc7a30';
+    ctx.font='400 13px monospace'; ctx.fillStyle='#cc7a30';
     ctx.fillText('e0', x, y+7);
   } else if (isLeaf) {
     ctx.font='700 19px monospace'; ctx.fillStyle='#5DCAA5';
     ctx.fillText(node.sym===' '?'␣':node.sym, x, y-6);
     ctx.font='400 14px monospace'; ctx.fillStyle='#3a9a78';
-    ctx.fillText(node.weight, x, y+8);
+    ctx.fillText(node.w, x, y+8);
   } else {
     ctx.font='600 20px monospace'; ctx.fillStyle='#AFA9EC';
-    ctx.fillText(node.weight, x, y);
+    ctx.fillText(node.w, x, y);
 
   }
 }
@@ -750,7 +721,7 @@ function renderTree() {
 function update() {
   const codes = getCurrentCodes();
   const freqMap = {};
-  for (const id in symMap) { if (symMap[id]) freqMap[id] = symMap[id].weight; }
+  for (const id in symMap) { if (symMap[id]) freqMap[id] = symMap[id].w; }
   const entries = Object.entries(freqMap).sort((a,b)=>b[1]-a[1]);
   const maxFreq = entries[0]?.[1]||1;
   const total = inputStr.length;
@@ -807,7 +778,7 @@ function update() {
   document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
     const code = codes[ch]||'?';
     const node = symMap[ch];
-    const order = node ? node.order : '?';
+    const order = node ? node.ord : '?';
     const barW = Math.round(f/maxFreq*100);
     return `<tr>
       <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
@@ -830,9 +801,46 @@ function makeAsciiHTML(str) {
   return pfx+src.split('').map(c=>`<span class="${cm[c]}">${c.charCodeAt(0).toString(2).padStart(8,'0')}</span><span class="sep"> </span>`).join('');
 }
 function makeHuffHTML(bits, chars) {
-  if (!bits) return '<span style="color:var(--text2);font-size:11px">—</span>';
-  const display = bits.length > 320 ? '…'+bits.slice(-320) : bits;
-  return display.split('').map((b,i)=>`<span style="color:${b==='0'?'#80c8ff':'#ff9090'}">${b}</span>`).join('');
+  if (!encodedLog.length) return '<span style="color:var(--text2);font-size:11px">—</span>';
+  const uniq = [...new Set(inputStr.split(''))];
+  const cm = {}; uniq.forEach((c,i) => cm[c] = COLOURS[i % COLOURS.length]);
+
+  // Giới hạn hiển thị: lấy các log entry gần nhất
+  let totalBits = 0;
+  const logs = [...encodedLog];
+  // Tính tổng bits, trim nếu quá dài
+  const MAX_BITS = 300;
+  let startIdx = 0;
+  let cumBits = 0;
+  for (let i = 0; i < logs.length; i++) cumBits += logs[i].bits.length;
+  if (cumBits > MAX_BITS) {
+    let trim = cumBits - MAX_BITS;
+    while (startIdx < logs.length && trim > 0) {
+      trim -= logs[startIdx].bits.length;
+      startIdx++;
+    }
+  }
+
+  const pfx = startIdx > 0 ? '<span style="color:var(--text2)">… </span>' : '';
+  let html = pfx;
+  for (let i = startIdx; i < logs.length; i++) {
+    const {ch, bits, isNew} = logs[i];
+    const cls = cm[ch] || 'b0';
+    if (isNew) {
+      // Ký tự mới: path(NYT) màu nhạt hơn + ASCII bits màu ký tự
+      const pathLen = bits.length - 8;
+      const pathBits = bits.slice(0, pathLen);
+      const asciiBits = bits.slice(pathLen);
+      if (pathBits) {
+        html += `<span class="${cls}" style="opacity:0.5">${pathBits}</span>`;
+      }
+      html += `<span class="${cls}">${asciiBits}</span>`;
+    } else {
+      html += `<span class="${cls}">${bits}</span>`;
+    }
+    html += '<span class="sep"> </span>';
+  }
+  return html;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -885,7 +893,7 @@ function resetAll(){
   queue=[];
   initTree(); prevLayout={};
   renderQueue();
-  document.getElementById('step-log').innerHTML='<span style="color:var(--text2);font-size:13px">— nhật ký bước sẽ hiện ở đây —</span>';
+  document.getElementById('step-log').innerHTML='<span style="color:var(--text2);font-size:13px">— step log will appear here —</span>';
   document.getElementById('string-display').innerHTML='';
   document.getElementById('freq-table').innerHTML='';
   const ph='<span style="color:var(--text2);font-size:11px">—</span>';
@@ -917,7 +925,7 @@ function libSaveStorage(){ try{localStorage.setItem(LIB_KEY,JSON.stringify(libra
 function libRender(){
   document.getElementById('lib-count').textContent=library.length;
   const el=document.getElementById('lib-items');
-  if(!library.length){el.innerHTML='<div class="lib-empty">Chưa có chuỗi nào.</div>';return;}
+  if(!library.length){el.innerHTML='<div class="lib-empty">No strings saved yet.</div>';return;}
   el.innerHTML=library.map((item,i)=>`
     <div class="lib-item" style="${editingId===item.id?'border-color:var(--purple)':''}">
       <div class="lib-item-info">
@@ -925,9 +933,9 @@ function libRender(){
         <div class="lib-item-str">${escH(item.str.replace(/ /g,'␣').slice(0,40))}${item.str.length>40?'…':''}</div>
       </div>
       <div class="lib-item-actions">
-        <div class="lib-act-btn use" title="Dùng" onclick="libUse(${i})">▶</div>
-        <div class="lib-act-btn edit" title="Sửa" onclick="libEdit(${i})">✎</div>
-        <div class="lib-act-btn del" title="Xoá" onclick="libDelete(${i})">✕</div>
+        <div class="lib-act-btn use" title="Use" onclick="libUse(${i})">▶</div>
+        <div class="lib-act-btn edit" title="Edit" onclick="libEdit(${i})">✎</div>
+        <div class="lib-act-btn del" title="Delete" onclick="libDelete(${i})">✕</div>
       </div>
     </div>`).join('');
 }
@@ -940,15 +948,15 @@ function libPreview(){
 function libSave(){
   const name=document.getElementById('lib-name').value.trim();
   const str=document.getElementById('lib-str').value;
-  if(!str){showToast('Chuỗi không được để trống!');return;}
-  const finalName=name||('Chuỗi '+(library.length+1));
+  if(!str){showToast('String cannot be empty!');return;}
+  const finalName=name||('String '+(library.length+1));
   if(editingId!==null){
     const idx=library.findIndex(x=>x.id===editingId);
     if(idx>=0){library[idx].name=finalName;library[idx].str=str;}
-    editingId=null; showToast('Đã cập nhật: '+finalName);
+    editingId=null; showToast('Updated: '+finalName);
   } else {
     library.push({id:Date.now(),name:finalName,str});
-    showToast('Đã lưu: '+finalName);
+    showToast('Saved: '+finalName);
   }
   libSaveStorage(); libRender(); libClearComposer();
 }
@@ -970,12 +978,12 @@ function libDelete(i){
   const name=library[i].name;
   if(editingId===library[i].id)libClearComposer();
   library.splice(i,1); libSaveStorage(); libRender();
-  showToast('Đã xoá: '+name);
+  showToast('Deleted: '+name);
 }
-function libUse(i){ addSample(library[i].str,{classList:{add:()=>{},remove:()=>{}}}); showToast('Đang dùng: '+library[i].name); }
+function libUse(i){ addSample(library[i].str,{classList:{add:()=>{},remove:()=>{}}}); showToast('Using: '+library[i].name); }
 function libUseComposer(){
   const str=document.getElementById('lib-str').value;
-  if(!str){showToast('Chưa có chuỗi!');return;}
+  if(!str){showToast('No string entered!');return;}
   addSample(str,{classList:{add:()=>{},remove:()=>{}}});
 }
 function toggleLib(){
