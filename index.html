@@ -357,12 +357,12 @@ function drawNode(x,y,node) {
   ctx.strokeStyle=isLeaf?'#5DCAA5':'#AFA9EC';ctx.lineWidth=isLeaf?2:1.2;ctx.stroke();
   ctx.textAlign='center';ctx.textBaseline='middle';
   if(isLeaf){
-    ctx.font='700 14px monospace';ctx.fillStyle='#5DCAA5';
+    ctx.font='700 20px monospace';ctx.fillStyle='#5DCAA5';
     ctx.fillText(node.ch===' '?'␣':node.ch,x,y-6);
-    ctx.font='400 10px monospace';ctx.fillStyle='#3a9a78';
+    ctx.font='400 16px monospace';ctx.fillStyle='#3a9a78';
     ctx.fillText(node.freq,x,y+8);
   } else {
-    ctx.font='600 12px monospace';ctx.fillStyle='#AFA9EC';
+    ctx.font='600 22px monospace';ctx.fillStyle='#AFA9EC';
     ctx.fillText(node.freq,x,y);
   }
 }
