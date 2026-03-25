@@ -346,7 +346,7 @@ function drawEdge(x1,y1,x2,y2,lbl) {
   ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex,ey);
   ctx.strokeStyle='#333345';ctx.lineWidth=1.2;ctx.stroke();
   const mx=(sx+ex)/2,my=(sy+ey)/2;
-  ctx.font='600 11px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font='600 30px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillStyle=lbl==='0'?'#5b8cff':'#ff6b6b';
   ctx.fillText(lbl, mx-dy/d*11, my+dx/d*11);
 }
