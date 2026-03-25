@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cây Huffman Động</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0c; --bg2: #141418; --bg3: #1c1c24; --border: #3a3a4a;
+  --text: #ffffff; --text2: #ffffff;
+  --leaf: #4dffb8; --leaf-fill: #0a3028;
+  --inner: #c4beff; --inner-fill: #1e1a40;
+  --hl: #ffb830; --chip-bg: #1e1e2e; --info-bg: #111116;
+  --blue: #7eb8ff; --red: #ff7070;
+}
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; padding: 28px 20px 70px;
+}
+h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; color: #fff; }
+.subtitle { font-size: 17px; color: #fff; margin-bottom: 22px; }
+.container { width: 100%; max-width: 1100px; }
+
+.input-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+.big-input {
+  width: 72px; height: 56px; font-size: 34px; font-weight: 700;
+  text-align: center; background: var(--bg3); color: #fff;
+  border: 2px solid var(--border); border-radius: 12px;
+  outline: none; font-family: 'Courier New', monospace; transition: border-color 0.2s;
+}
+.big-input:focus { border-color: var(--leaf); }
+.btn {
+  height: 56px; padding: 0 22px; border-radius: 12px; font-size: 16px; font-weight: 600;
+  cursor: pointer; border: 2px solid var(--border); background: var(--bg3);
+  color: #fff; transition: all 0.15s; white-space: nowrap;
+}
+.btn:hover { background: #2a2a38; border-color: #666677; }
+.btn:active { transform: scale(0.97); }
+.btn-green { border-color: var(--leaf); color: var(--leaf); }
+.btn-green:hover { background: var(--leaf-fill); }
+.btn-red { border-color: var(--red); color: var(--red); }
+.btn-red:hover { background: #2a1515; }
+.btn-sample { border-color: var(--hl); color: var(--hl); font-size: 15px; }
+.btn-sample:hover { background: #2a2010; }
+
+.speed-row {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+  font-size: 16px; color: #fff; flex-wrap: wrap;
+}
+.speed-row input[type=range] {
+  width: 180px; height: 6px; accent-color: var(--hl); cursor: pointer;
+}
+#speed-label { color: var(--hl); font-weight: 700; min-width: 56px; font-family: 'Courier New', monospace; font-size: 16px; }
+
+#string-display {
+  font-family: 'Courier New', monospace; font-size: 18px; letter-spacing: 3px;
+  color: #fff; margin-bottom: 10px; min-height: 24px;
+  word-break: break-all; line-height: 1.8;
+}
+#string-display .ch { color: #fff; }
+#string-display .ch-new { color: var(--hl); }
+
+#freq-table {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; min-height: 40px; align-items: center;
+}
+.freq-chip {
+  display: flex; align-items: center; gap: 6px; padding: 7px 16px;
+  border-radius: 99px; font-size: 15px; font-family: 'Courier New', monospace;
+  border: 2px solid var(--border); background: var(--chip-bg); transition: all 0.3s;
+}
+.freq-chip .ch { font-weight: 700; font-size: 18px; color: #fff; }
+.freq-chip .cnt { color: #fff; }
+.freq-chip .code { color: var(--hl); font-size: 14px; margin-left: 4px; }
+.freq-chip.top1 { border-color: var(--leaf); background: var(--leaf-fill); }
+.freq-chip.top2 { border-color: #5aaaf0; background: #0c2033; }
+.freq-chip.top3 { border-color: #e09040; background: #251808; }
+
+#canvas-wrap {
+  border: 2px solid var(--border); border-radius: 16px;
+  background: var(--bg2); overflow: hidden; margin-bottom: 16px; position: relative;
+}
+#tree-canvas { display: block; width: 100%; }
+#empty-msg {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  color: #fff; font-size: 18px; pointer-events: none; text-align: center;
+}
+
+/* BIT STREAMS */
+#bitstream-panel {
+  border: 2px solid var(--border); border-radius: 14px;
+  background: var(--info-bg); padding: 18px 20px; margin-bottom: 16px;
+}
+.panel-title {
+  font-size: 15px; color: #fff; font-weight: 700; margin-bottom: 14px;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.bitstream-row { margin-bottom: 14px; }
+.bitstream-row:last-child { margin-bottom: 0; }
+.bs-label {
+  font-size: 15px; color: #fff; margin-bottom: 7px;
+  display: flex; align-items: center; gap: 10px;
+}
+.tag {
+  display: inline-block; padding: 3px 12px; border-radius: 5px;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
+}
+.tag-ascii { background: #1e2a45; color: var(--blue); border: 2px solid #3a5a9a; }
+.tag-huff  { background: #1a3028; color: var(--leaf); border: 2px solid #2a6a4a; }
+.bs-bits {
+  font-family: 'Courier New', monospace; font-size: 16px; line-height: 2.1;
+  word-break: break-all; letter-spacing: 2px; max-height: 90px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+  padding: 8px 12px; background: var(--bg3); border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.bs-bits::-webkit-scrollbar { width: 5px; }
+.bs-bits::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* per-char colours — brighter for projector */
+.b0{color:#80c8ff} .b1{color:#ff9090} .b2{color:#60ffcc}
+.b3{color:#ffcc60} .b4{color:#d0a8ff} .b5{color:#ffff60}
+.b6{color:#80e0ff} .b7{color:#ffb0e0} .b8{color:#80ffcc} .b9{color:#ffd080}
+.sep { color: #555568; margin: 0 2px; user-select: none; }
+
+/* FORMULA PANEL */
+#formula-panel {
+  border: 2px solid var(--border); border-radius: 14px;
+  background: var(--info-bg); padding: 18px 20px; margin-bottom: 16px;
+}
+.formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media(max-width:620px){ .formula-grid { grid-template-columns: 1fr; } }
+.f-card {
+  background: var(--bg3); border: 2px solid var(--border); border-radius: 10px; padding: 14px 16px;
+}
+.f-card .f-name { font-size: 15px; color: #fff; margin-bottom: 8px; font-weight: 600; }
+.f-card .f-body { font-family: 'Courier New', monospace; font-size: 16px; color: #fff; line-height: 1.8; margin-bottom: 8px; }
+.f-card .f-body .v { color: var(--hl); font-weight: 700; }
+.f-card .f-result { font-family: 'Courier New', monospace; font-size: 22px; font-weight: 700; border-top: 1px solid var(--border); padding-top: 8px; }
+.f-result.blue { color: var(--blue); }
+.f-result.green { color: var(--leaf); }
+
+.f-savings {
+  background: var(--bg3); border: 2px solid #2a4a28; border-radius: 10px; padding: 14px 16px;
+}
+.f-savings .f-name { font-size: 15px; color: #fff; margin-bottom: 10px; font-weight: 600; }
+.f-eq {
+  font-family: 'Courier New', monospace; font-size: 17px; color: #fff;
+  line-height: 2.4; display: flex; flex-wrap: wrap; gap: 0 8px; align-items: baseline;
+}
+.f-eq .v   { color: var(--hl); font-weight: 700; }
+.f-eq .res { color: var(--leaf); font-weight: 700; font-size: 20px; }
+.f-eq .neg { color: var(--red); font-weight: 700; font-size: 20px; }
+.f-eq .pct { color: var(--leaf); font-weight: 700; font-size: 20px; }
+.f-eq .sym { color: #fff; }
+.f-eq .dim { color: #fff; }
+.f-eq .sep2 { flex-basis: 100%; height: 0; }
+
+/* STATS */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 10px; margin-bottom: 16px;
+}
+.stat-card { background: var(--info-bg); border: 2px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat-card .label { font-size: 14px; color: #fff; margin-bottom: 6px; }
+.stat-card .value { font-size: 26px; font-weight: 700; color: #fff; font-family: 'Courier New', monospace; }
+.stat-card.green .value { color: var(--leaf); }
+.stat-card.orange .value { color: var(--hl); }
+
+/* CODE TABLE */
+#code-table-wrap { background: var(--info-bg); border: 2px solid var(--border); border-radius: 14px; padding: 18px; overflow-x: auto; margin-bottom: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 16px; }
+th { text-align: left; color: #fff; font-weight: 700; padding: 7px 12px; border-bottom: 2px solid var(--border); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+td { padding: 8px 12px; font-family: 'Courier New', monospace; border-bottom: 1px solid #252530; }
+tr:last-child td { border-bottom: none; }
+td.ch-col { font-size: 22px; font-weight: 700; color: #fff; }
+td.code-col { color: var(--hl); letter-spacing: 3px; font-size: 17px; }
+td.freq-col { color: var(--leaf); font-size: 17px; }
+td.len-col { color: #fff; }
+td.contrib-col { color: var(--blue); }
+.bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--leaf), #5aaaf0); transition: width 0.4s; min-width: 2px; }
+
+.legend { display: flex; gap: 24px; font-size: 16px; color: #fff; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 8px; }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; flex-shrink: 0; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌿 Cây Huffman Động</h1>
+
+  <div id="string-display"></div>
+  <div id="freq-table"></div>
+
+  <div class="input-row">
+    <input id="char-input" class="big-input" maxlength="1" placeholder="A" autocomplete="off" spellcheck="false"/>
+    <button class="btn btn-green" onclick="addChar()">+ Thêm &nbsp;↵</button>
+    <button class="btn btn-sample" onclick="addSample('ABRACADABRA')">▶ ABRACADABRA</button>
+    <button class="btn btn-sample" onclick="addSample('MISSISSIPPI')">▶ MISSISSIPPI</button>
+    <button class="btn btn-sample" onclick="addSample('HELLO WORLD')">▶ HELLO WORLD</button>
+    <button class="btn btn-red" onclick="resetAll()">✕ Xoá</button>
+  </div>
+
+  <div class="speed-row">
+    <span>⏱ Tốc độ demo:</span>
+    <input type="range" id="speed-slider" min="1" max="10" value="3" step="1" oninput="updateSpeedLabel()"/>
+    <span id="speed-label">400ms</span>
+    <span style="font-size:11px;color:var(--text2)">← chậm &nbsp;·&nbsp; nhanh →</span>
+  </div>
+
+  <div id="canvas-wrap">
+    <canvas id="tree-canvas" height="300"></canvas>
+    <div id="empty-msg">Nhập ký tự để xây dựng cây Huffman...</div>
+  </div>
+
+  <!-- BIT STREAMS -->
+  <div id="bitstream-panel">
+    <div class="panel-title">Chuỗi bit — so sánh trực tiếp</div>
+    <div class="bitstream-row">
+      <div class="bs-label">
+        <span class="tag tag-ascii">ASCII gốc</span>
+        mỗi ký tự cố định 8 bit &nbsp;·&nbsp; <span id="ascii-len" style="color:var(--blue)">0 bits</span>
+      </div>
+      <div class="bs-bits" id="ascii-bits"><span style="color:var(--text2);font-size:11px">— chưa có dữ liệu —</span></div>
+    </div>
+    <div class="bitstream-row">
+      <div class="bs-label">
+        <span class="tag tag-huff">Huffman</span>
+        ký tự phổ biến → mã ngắn hơn &nbsp;·&nbsp; <span id="huff-len" style="color:var(--leaf)">0 bits</span>
+      </div>
+      <div class="bs-bits" id="huff-bits"><span style="color:var(--text2);font-size:11px">— chưa có dữ liệu —</span></div>
+    </div>
+  </div>
+
+  <!-- FORMULA PANEL -->
+  <div id="formula-panel">
+    <div class="panel-title">Công thức tính — realtime</div>
+    <div class="formula-grid">
+      <div class="f-card">
+        <div class="f-name">Bits gốc (ASCII 8-bit)</div>
+        <div class="f-body">
+          n_ký_tự &times; 8<br>
+          = <span class="v" id="fn">0</span> &times; 8
+        </div>
+        <div class="f-result blue" id="f-raw">= 0 bits</div>
+      </div>
+      <div class="f-card">
+        <div class="f-name">Bits Huffman &nbsp; Σ freq(c) × len(c)</div>
+        <div class="f-body" id="f-huff-expr" style="max-height:60px;overflow-y:auto;scrollbar-width:thin">
+          <span style="color:var(--text2)">—</span>
+        </div>
+        <div class="f-result green" id="f-huff">= 0 bits</div>
+      </div>
+    </div>
+    <div class="f-savings">
+      <div class="f-name">Tiết kiệm &amp; Tỉ lệ nén</div>
+      <div class="f-eq" id="f-eq"><span class="dim">—</span></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="label">Tổng ký tự</div><div class="value" id="s-total">0</div></div>
+    <div class="stat-card"><div class="label">Số loại</div><div class="value" id="s-unique">0</div></div>
+    <div class="stat-card"><div class="label">Bits ASCII</div><div class="value" id="s-raw">0</div></div>
+    <div class="stat-card"><div class="label">Bits Huffman</div><div class="value" id="s-huff">0</div></div>
+    <div class="stat-card green"><div class="label">Tiết kiệm</div><div class="value" id="s-save">—</div></div>
+    <div class="stat-card orange"><div class="label">Tỉ lệ nén</div><div class="value" id="s-ratio">—</div></div>
+  </div>
+
+  <!-- CODE TABLE -->
+  <div id="code-table-wrap">
+    <div class="panel-title" style="margin-bottom:10px">Bảng mã Huffman — đóng góp bit</div>
+    <table>
+      <thead><tr>
+        <th>Ký tự</th><th>Tần suất</th><th>Mã Huffman</th><th>Độ dài</th>
+        <th>Đóng góp (freq × len)</th><th style="width:90px">Tần suất</th>
+      </tr></thead>
+      <tbody id="code-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="border-color:#5DCAA5;background:#0a3028"></div>Ký tự (leaf)</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#AFA9EC;background:#1e1a40"></div>Nút trung gian</div>
+    <div class="legend-item"><span style="color:#5b8cff;font-weight:700">0</span>&nbsp;= cạnh trái</div>
+    <div class="legend-item"><span style="color:#ff6b6b;font-weight:700">1</span>&nbsp;= cạnh phải</div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('tree-canvas');
+const ctx = canvas.getContext('2d');
+let freq = {}, inputStr = '';
+let sampleTimer = null;
+const COLOURS = ['b0','b1','b2','b3','b4','b5','b6','b7','b8','b9'];
+
+// ---- Speed ----
+function getDelay() {
+  const v = +document.getElementById('speed-slider').value;
+  return Math.round(900 * Math.pow(0.085, (v-1)/9));
+}
+function updateSpeedLabel() {
+  const d = getDelay();
+  document.getElementById('speed-label').textContent = d >= 1000 ? (d/1000).toFixed(1)+'s' : d+'ms';
+}
+updateSpeedLabel();
+
+// ---- Huffman ----
+function buildTree(fm) {
+  const e = Object.entries(fm);
+  if (!e.length) return null;
+  let h = e.map(([ch,f]) => ({ch,freq:f,left:null,right:null,id:ch}));
+  h.sort((a,b) => a.freq-b.freq || a.ch.localeCompare(b.ch));
+  let id=0;
+  while (h.length>1) {
+    const l=h.shift(), r=h.shift();
+    const p={ch:null,freq:l.freq+r.freq,left:l,right:r,id:'n'+id++};
+    let i=0;
+    while(i<h.length&&(h[i].freq<p.freq||(h[i].freq===p.freq&&h[i].id<p.id)))i++;
+    h.splice(i,0,p);
+  }
+  return h[0];
+}
+function getCodes(node,pre='',codes={}) {
+  if(!node) return codes;
+  if(node.ch!==null){codes[node.ch]=pre||'0';return codes;}
+  getCodes(node.left,pre+'0',codes);
+  getCodes(node.right,pre+'1',codes);
+  return codes;
+}
+function getDepth(n){if(!n)return 0;return 1+Math.max(getDepth(n.left),getDepth(n.right));}
+
+// ---- Layout / Draw ----
+function layout(n,x,y,sp,pos={}) {
+  if(!n) return pos;
+  pos[n.id]={x,y,node:n};
+  if(n.left)  layout(n.left,  x-sp, y+72, sp*0.52, pos);
+  if(n.right) layout(n.right, x+sp, y+72, sp*0.52, pos);
+  return pos;
+}
+function drawEdge(x1,y1,x2,y2,lbl) {
+  const R=22,dx=x2-x1,dy=y2-y1,d=Math.sqrt(dx*dx+dy*dy);
+  const sx=x1+dx/d*R,sy=y1+dy/d*R,ex=x2-dx/d*R,ey=y2-dy/d*R;
+  ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(ex,ey);
+  ctx.strokeStyle='#333345';ctx.lineWidth=1.2;ctx.stroke();
+  const mx=(sx+ex)/2,my=(sy+ey)/2;
+  ctx.font='600 11px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle=lbl==='0'?'#5b8cff':'#ff6b6b';
+  ctx.fillText(lbl, mx-dy/d*11, my+dx/d*11);
+}
+function drawNode(x,y,node) {
+  const R=22,isLeaf=node.ch!==null;
+  ctx.beginPath();ctx.arc(x,y,R,0,Math.PI*2);
+  ctx.fillStyle=isLeaf?'#0a3028':'#1e1a40';ctx.fill();
+  ctx.strokeStyle=isLeaf?'#5DCAA5':'#AFA9EC';ctx.lineWidth=isLeaf?2:1.2;ctx.stroke();
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  if(isLeaf){
+    ctx.font='700 14px monospace';ctx.fillStyle='#5DCAA5';
+    ctx.fillText(node.ch===' '?'␣':node.ch,x,y-6);
+    ctx.font='400 10px monospace';ctx.fillStyle='#3a9a78';
+    ctx.fillText(node.freq,x,y+8);
+  } else {
+    ctx.font='600 12px monospace';ctx.fillStyle='#AFA9EC';
+    ctx.fillText(node.freq,x,y);
+  }
+}
+function render(root) {
+  const W=canvas.parentElement.clientWidth||800;
+  const depth=getDepth(root);
+  const H=root?Math.max(depth*72+60,200):240;
+  canvas.width=W;canvas.height=H;canvas.style.height=H+'px';
+  ctx.clearRect(0,0,W,H);
+  document.getElementById('empty-msg').style.display=root?'none':'block';
+  if(!root) return;
+  const sp=Math.min(W/2.6,220);
+  const pos=layout(root,W/2,44,sp);
+  Object.values(pos).forEach(({x,y,node})=>{
+    if(node.left&&pos[node.left.id])   drawEdge(x,y,pos[node.left.id].x,  pos[node.left.id].y,  '0');
+    if(node.right&&pos[node.right.id]) drawEdge(x,y,pos[node.right.id].x, pos[node.right.id].y, '1');
+  });
+  Object.values(pos).forEach(({x,y,node})=>drawNode(x,y,node));
+}
+
+// ---- Bit HTML builder ----
+function makeBitHTML(str, codes, isAscii) {
+  const uniq=[...new Set(str.split(''))];
+  const cm={};uniq.forEach((c,i)=>cm[c]=COLOURS[i%COLOURS.length]);
+  const src = str.length>80 ? str.slice(-80) : str;
+  const pfx = str.length>80 ? '<span style="color:var(--text2)">… </span>' : '';
+  let html='';
+  for(const c of src){
+    const bits=isAscii ? c.charCodeAt(0).toString(2).padStart(8,'0') : (codes[c]||'?');
+    html+=`<span class="${cm[c]}">${bits}</span><span class="sep"> </span>`;
+  }
+  return pfx+html;
+}
+
+// ---- Huffman expr ----
+function makeHuffExpr(entries, codes) {
+  if(!entries.length) return '<span style="color:var(--text2)">Σ freq(c) × len(code_c)</span>';
+  return entries.map(([ch,f])=>{
+    const code=codes[ch]||'0';
+    const label=ch===' '?'␣':ch;
+    return `<span style="color:var(--text2)">${label}:</span><span class="v">${f}</span><span style="color:var(--text2)">×</span><span class="v">${code.length}</span>`;
+  }).join('<span style="color:var(--text2);margin:0 2px">+</span>');
+}
+
+// ---- Main update ----
+function update() {
+  const root=buildTree(freq);
+  const codes=root?getCodes(root):{};
+  const entries=Object.entries(freq).sort((a,b)=>b[1]-a[1]);
+  const maxFreq=entries[0]?.[1]||1;
+  const total=Object.values(freq).reduce((a,b)=>a+b,0);
+  const rawBits=total*8;
+  const huffBits=entries.reduce((s,[ch,f])=>s+f*(codes[ch]||'').length,0);
+  const saved=rawBits-huffBits;
+  const ratio=rawBits>0?(saved/rawBits*100):0;
+
+  // String display
+  const sd=document.getElementById('string-display');
+  const disp=inputStr.length>80?inputStr.slice(-80):inputStr;
+  const spfx=inputStr.length>80?'<span style="color:var(--text2)">… </span>':'';
+  sd.innerHTML=spfx+disp.split('').map((c,i)=>
+    `<span class="${i===disp.length-1&&inputStr.length>0?'ch-new':'ch'}">${c===' '?'&nbsp;':c}</span>`
+  ).join('');
+
+  // Freq chips
+  document.getElementById('freq-table').innerHTML=entries.map(([ch,f],i)=>{
+    const cls=i===0?'top1':i===1?'top2':i===2?'top3':'';
+    return `<div class="freq-chip ${cls}"><span class="ch">${ch===' '?'␣':ch}</span><span class="cnt">×${f}</span><span class="code">${codes[ch]||''}</span></div>`;
+  }).join('');
+
+  // Bit streams
+  if(total===0){
+    const ph='<span style="color:var(--text2);font-size:11px">— chưa có dữ liệu —</span>';
+    document.getElementById('ascii-bits').innerHTML=ph;
+    document.getElementById('huff-bits').innerHTML=ph;
+    document.getElementById('ascii-len').textContent='0 bits';
+    document.getElementById('huff-len').textContent='0 bits';
+  } else {
+    document.getElementById('ascii-bits').innerHTML=makeBitHTML(inputStr,codes,true);
+    document.getElementById('huff-bits').innerHTML=makeBitHTML(inputStr,codes,false);
+    document.getElementById('ascii-len').textContent=rawBits+' bits';
+    document.getElementById('huff-len').textContent=huffBits+' bits';
+    ['ascii-bits','huff-bits'].forEach(id=>{const el=document.getElementById(id);el.scrollTop=el.scrollHeight;});
+  }
+
+  // Formula
+  document.getElementById('fn').textContent=total;
+  document.getElementById('f-raw').textContent='= '+rawBits+' bits';
+  document.getElementById('f-huff-expr').innerHTML=makeHuffExpr(entries,codes);
+  document.getElementById('f-huff').textContent='= '+huffBits+' bits';
+
+  const fEq=document.getElementById('f-eq');
+  if(total===0){
+    fEq.innerHTML='<span class="dim">—</span>';
+  } else {
+    const rStr=ratio.toFixed(1);
+    const savCls=saved>=0?'res':'neg';
+    const ratCls=ratio>=0?'pct':'neg';
+    fEq.innerHTML=
+      `<span class="sym">Tiết kiệm</span><span class="sym">=</span>`+
+      `<span class="sym">Bits_ASCII − Bits_Huffman</span><span class="sym">=</span>`+
+      `<span class="v">${rawBits}</span><span class="sym">−</span><span class="v">${huffBits}</span>`+
+      `<span class="sym">=</span><span class="${savCls}">${saved} bits</span>`+
+      `<span class="sep2"></span>`+
+      `<span class="sym">Tỉ lệ nén</span><span class="sym">=</span>`+
+      `<span class="sym">( Tiết kiệm ÷ Bits_ASCII ) × 100</span><span class="sym">=</span>`+
+      `<span class="sym">( ${saved} ÷ ${rawBits} )</span><span class="sym">× 100</span>`+
+      `<span class="sym">=</span><span class="${ratCls}">${rStr} %</span>`;
+  }
+
+  // Stats
+  document.getElementById('s-total').textContent=total;
+  document.getElementById('s-unique').textContent=Object.keys(freq).length;
+  document.getElementById('s-raw').textContent=rawBits;
+  document.getElementById('s-huff').textContent=huffBits||0;
+  document.getElementById('s-save').textContent=saved>0?saved+' bits':'—';
+  document.getElementById('s-ratio').textContent=rawBits>0?ratio.toFixed(1)+'%':'—';
+
+  // Code table
+  document.getElementById('code-tbody').innerHTML=entries.map(([ch,f])=>{
+    const code=codes[ch]||'0';
+    const contrib=f*code.length;
+    const barW=Math.round(f/maxFreq*100);
+    return `<tr>
+      <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
+      <td class="freq-col">${f}</td>
+      <td class="code-col">${code}</td>
+      <td class="len-col">${code.length} bit</td>
+      <td class="contrib-col">${f} × ${code.length} = <strong style="color:var(--hl)">${contrib}</strong></td>
+      <td><div class="bar" style="width:${barW}%"></div></td>
+    </tr>`;
+  }).join('');
+
+  render(root);
+}
+
+// ---- Actions ----
+const charInput=document.getElementById('char-input');
+charInput.addEventListener('keydown',e=>{if(e.key==='Enter')addChar();});
+
+function addChar(){
+  const c=charInput.value;
+  if(!c)return;
+  inputStr+=c;freq[c]=(freq[c]||0)+1;
+  charInput.value='';charInput.focus();
+  update();
+}
+
+function addSample(str){
+  if(sampleTimer)clearInterval(sampleTimer);
+  resetAll();
+  let i=0;
+  sampleTimer=setInterval(()=>{
+    if(i>=str.length){clearInterval(sampleTimer);sampleTimer=null;return;}
+    const c=str[i++];
+    inputStr+=c;freq[c]=(freq[c]||0)+1;
+    update();
+  },getDelay());
+}
+
+function resetAll(){
+  if(sampleTimer){clearInterval(sampleTimer);sampleTimer=null;}
+  freq={};inputStr='';
+  update();charInput.focus();
+}
+
+window.addEventListener('resize',()=>render(buildTree(freq)));
+update();
+charInput.focus();
+</script>
+</body>
+</html>
