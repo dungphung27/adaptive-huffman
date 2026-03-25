@@ -250,6 +250,7 @@ td.ord-col { color:var(--blue); }
 <body>
 <div class="container">
   <h1>🌿 Adaptive Huffman Tree</h1>
+
   <div id="string-display"></div>
   <div id="freq-table"></div>
 
@@ -478,12 +479,10 @@ function processChar(ch) {
     encodedLog.push({ ch, isNew: false, pathBits: code });
 
   } else {
-    // New char: get NYT path from CURRENT tree (before insertion) — Vitter rule
-    const nytPath = getCode(nytNode);
-    const ascii   = ch.charCodeAt(0).toString(2).padStart(8, '0');
-    code = nytPath + ascii;
-
-    logLines.push(`  New → NYT:<span class="lo-code">${nytPath || '(ε)'}</span> + ASCII:<span class="lo-code">${ascii}</span>`);
+    // New char: Vitter rule — encode using nytPath BEFORE tree changes
+    const nytPathEncoded = getCode(nytNode);
+    const ascii = ch.charCodeAt(0).toString(2).padStart(8, '0');
+    code = nytPathEncoded + ascii;
 
     // Now expand NYT and update tree
     const oldNYT = nytNode;
@@ -511,10 +510,15 @@ function processChar(ch) {
     logLines.push(`  Split NYT → [e0 | '${ch === ' ' ? '␣' : ch}']`);
 
     incrementNode(leaf);
-    enforceDisplay(root);  // visual only — does not affect encoding
+    enforceDisplay(root);
+
+    // NYT path AFTER update+enforce — shown in log to match visual tree
+    const nytPathDisplay = getCode(nytNode);
+    logLines.push(`  New → NYT:<span class="lo-code">${nytPathDisplay || '(ε)'}</span> + ASCII:<span class="lo-code">${ascii}</span>`);
 
     encodedBits += code;
-    encodedLog.push({ ch, isNew: true, nytPath, ascii8: ascii });
+    // encodedLog stores display path (after enforce) so bitstream matches visual tree
+    encodedLog.push({ ch, isNew: true, nytPath: nytPathDisplay, ascii8: ascii });
   }
 
   inputStr += ch;
@@ -689,7 +693,7 @@ function drawNode(x, y, node) {
   ctx.textAlign='center'; ctx.textBaseline='middle';
 
   // order number (small, top-right)
-
+  
 
   if (isNYT) {
     ctx.font='700 15px monospace'; ctx.fillStyle='#ff9f43';
