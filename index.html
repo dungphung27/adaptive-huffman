@@ -50,20 +50,15 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
   outline:none; font-family:'Courier New',monospace; transition:border-color .2s;
 }
 .big-input:focus { border-color:var(--leaf); }
-
 .input-row { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
 
-/* ALGO toggle */
-.algo-row {
-  display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;
+/* SPEED ROW */
+.speed-row {
+  display:flex; align-items:center; gap:12px; margin-bottom:14px;
+  font-size:15px; color:#fff; flex-wrap:wrap;
 }
-.algo-label { font-size:14px; color:var(--text2); }
-.algo-btn {
-  height:34px; padding:0 14px; border-radius:8px; font-size:13px; font-weight:600;
-  cursor:pointer; border:2px solid var(--border); background:var(--bg3); color:var(--text2);
-  transition:all .15s;
-}
-.algo-btn.sel { border-color:var(--hl); color:var(--hl); background:#2a2010; }
+.speed-row input[type=range] { width:180px; height:5px; accent-color:var(--hl); cursor:pointer; }
+#speed-label { color:var(--hl); font-weight:700; min-width:55px; font-family:'Courier New',monospace; }
 
 /* LIBRARY */
 #lib-panel {
@@ -137,35 +132,39 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
   border-radius:12px; padding:12px 16px; margin-bottom:12px;
 }
 #queue-panel.visible { display:block; }
-.queue-hdr { font-size:12px; color:var(--hl); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
-.queue-hint { font-size:12px; color:var(--text2); font-weight:400; text-transform:none; letter-spacing:0; }
+.queue-hdr {
+  font-size:13px; color:var(--hl); font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;
+}
+.queue-hint { font-size:13px; color:#fff; font-weight:400; text-transform:none; letter-spacing:0; }
 #queue-chars { display:flex; flex-wrap:wrap; gap:5px; min-height:36px; align-items:center; }
 .q-char {
   display:inline-flex; align-items:center; justify-content:center;
-  width:34px; height:34px; border-radius:7px;
-  font-family:'Courier New',monospace; font-size:18px; font-weight:700;
+  width:36px; height:36px; border-radius:7px;
+  font-family:'Courier New',monospace; font-size:19px; font-weight:700;
   border:2px solid var(--border); background:var(--bg2); color:#fff; transition:all .25s;
 }
-.q-char.next { border-color:var(--leaf); background:var(--leaf-fill); color:var(--leaf); transform:scale(1.15); }
+.q-char.next { border-color:var(--leaf); background:var(--leaf-fill); color:var(--leaf); transform:scale(1.18); }
 .q-char.gone { opacity:0; transform:scale(.5) translateY(-10px); }
 
 /* STEP LOG */
 #step-log {
   background:var(--info-bg); border:2px solid var(--border); border-radius:12px;
-  padding:12px 16px; margin-bottom:14px; max-height:140px; overflow-y:auto;
+  padding:12px 16px; margin-bottom:14px; max-height:160px; overflow-y:auto;
   scrollbar-width:thin; scrollbar-color:var(--border) transparent;
+  font-size:14px;
 }
-.log-entry { font-size:13px; font-family:'Courier New',monospace; line-height:1.9; color:var(--text2); }
-.log-entry .lo-char { color:#fff; font-weight:700; }
-.log-entry .lo-new { color:var(--nyt); }
-.log-entry .lo-code { color:var(--hl); letter-spacing:2px; }
-.log-entry .lo-swap { color:var(--swap); }
-.log-entry .lo-inc { color:var(--leaf); }
+.log-entry { font-family:'Courier New',monospace; line-height:2; color:#fff; }
+.log-entry .lo-char { color:#fff; font-weight:700; font-size:16px; }
+.log-entry .lo-new  { color:var(--nyt); font-weight:700; }
+.log-entry .lo-code { color:var(--hl); letter-spacing:2px; font-weight:700; }
+.log-entry .lo-swap { color:var(--swap); font-weight:700; }
+.log-entry .lo-inc  { color:var(--leaf); font-weight:700; }
 
 /* STRING DISPLAY */
 #string-display {
-  font-family:'Courier New',monospace; font-size:17px; letter-spacing:3px;
-  color:#fff; margin-bottom:8px; min-height:22px; word-break:break-all; line-height:1.8;
+  font-family:'Courier New',monospace; font-size:18px; letter-spacing:3px;
+  color:#fff; margin-bottom:8px; min-height:24px; word-break:break-all; line-height:1.8;
 }
 #string-display .ch { color:#fff; }
 #string-display .ch-new { color:var(--hl); animation:popIn .3s ease; }
@@ -178,8 +177,8 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
   border-radius:99px; font-size:14px; font-family:'Courier New',monospace;
   border:2px solid var(--border); background:var(--chip-bg); transition:all .35s;
 }
-.freq-chip .ch { font-weight:700; font-size:16px; color:#fff; }
-.freq-chip .cnt { color:var(--text2); }
+.freq-chip .ch  { font-weight:700; font-size:16px; color:#fff; }
+.freq-chip .cnt { color:#fff; }
 .freq-chip .code { color:var(--hl); font-size:13px; margin-left:3px; }
 .freq-chip.top1 { border-color:var(--leaf); background:var(--leaf-fill); }
 .freq-chip.top2 { border-color:#5aaaf0; background:#0c2033; }
@@ -193,31 +192,55 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 #tree-canvas { display:block; width:100%; }
 #empty-msg {
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  color:var(--text2); font-size:17px; pointer-events:none; text-align:center;
+  color:#fff; font-size:17px; pointer-events:none; text-align:center;
 }
 
 /* BIT PANEL */
 #bitstream-panel { border:2px solid var(--border); border-radius:12px; background:var(--info-bg); padding:16px 18px; margin-bottom:14px; }
-.panel-title { font-size:14px; color:var(--text2); font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+.panel-title { font-size:14px; color:#fff; font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
 .bitstream-row { margin-bottom:12px; }
 .bitstream-row:last-child { margin-bottom:0; }
-.bs-label { font-size:14px; color:var(--text2); margin-bottom:6px; display:flex; align-items:center; gap:9px; }
-.tag { display:inline-block; padding:2px 10px; border-radius:5px; font-size:12px; font-weight:700; letter-spacing:.5px; }
+.bs-label { font-size:14px; color:#fff; margin-bottom:6px; display:flex; align-items:center; gap:9px; }
+.tag { display:inline-block; padding:3px 10px; border-radius:5px; font-size:13px; font-weight:700; letter-spacing:.5px; }
 .tag-ascii { background:#1e2a45; color:var(--blue); border:2px solid #3a5a9a; }
 .tag-huff  { background:#1a3028; color:var(--leaf); border:2px solid #2a6a4a; }
 .bs-bits {
-  font-family:'Courier New',monospace; font-size:15px; line-height:2;
+  font-family:'Courier New',monospace; font-size:15px; line-height:2.1;
   word-break:break-all; letter-spacing:2px; max-height:80px; overflow-y:auto;
-  scrollbar-width:thin; padding:7px 11px; background:var(--bg3); border-radius:7px; border:1px solid var(--border);
+  scrollbar-width:thin; padding:8px 12px; background:var(--bg3); border-radius:7px; border:1px solid var(--border);
 }
 .b0{color:#80c8ff}.b1{color:#ff9090}.b2{color:#60ffcc}.b3{color:#ffcc60}.b4{color:#d0a8ff}
 .b5{color:#ffff60}.b6{color:#80e0ff}.b7{color:#ffb0e0}.b8{color:#80ffcc}.b9{color:#ffd080}
 .sep{color:#555568;margin:0 2px;user-select:none;}
 
+/* FORMULA PANEL */
+#formula-panel { border:2px solid var(--border); border-radius:12px; background:var(--info-bg); padding:16px 18px; margin-bottom:14px; }
+.formula-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+@media(max-width:620px){.formula-grid{grid-template-columns:1fr;}}
+.f-card { background:var(--bg3); border:2px solid var(--border); border-radius:10px; padding:13px 15px; }
+.f-card .f-name { font-size:14px; color:#fff; margin-bottom:7px; font-weight:600; }
+.f-card .f-body { font-family:'Courier New',monospace; font-size:15px; color:#fff; line-height:1.8; margin-bottom:7px; }
+.f-card .f-body .v { color:var(--hl); font-weight:700; }
+.f-card .f-result { font-family:'Courier New',monospace; font-size:21px; font-weight:700; border-top:1px solid var(--border); padding-top:7px; }
+.f-result.blue { color:var(--blue); }
+.f-result.green { color:var(--leaf); }
+.f-savings { background:var(--bg3); border:2px solid #2a4a28; border-radius:10px; padding:13px 15px; }
+.f-savings .f-name { font-size:14px; color:#fff; margin-bottom:9px; font-weight:600; }
+.f-eq {
+  font-family:'Courier New',monospace; font-size:16px; color:#fff;
+  line-height:2.4; display:flex; flex-wrap:wrap; gap:0 8px; align-items:baseline;
+}
+.f-eq .v   { color:var(--hl); font-weight:700; }
+.f-eq .res { color:var(--leaf); font-weight:700; font-size:19px; }
+.f-eq .neg { color:var(--red); font-weight:700; font-size:19px; }
+.f-eq .pct { color:var(--leaf); font-weight:700; font-size:19px; }
+.f-eq .sym { color:#fff; }
+.f-eq .sep2 { flex-basis:100%; height:0; }
+
 /* STATS */
 .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:9px; margin-bottom:14px; }
 .stat-card { background:var(--info-bg); border:2px solid var(--border); border-radius:11px; padding:12px 14px; }
-.stat-card .lbl { font-size:13px; color:var(--text2); margin-bottom:5px; }
+.stat-card .lbl { font-size:13px; color:#fff; margin-bottom:5px; }
 .stat-card .val { font-size:24px; font-weight:700; color:#fff; font-family:'Courier New',monospace; }
 .stat-card.green .val { color:var(--leaf); }
 .stat-card.orange .val { color:var(--hl); }
@@ -225,16 +248,16 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 /* CODE TABLE */
 #code-table-wrap { background:var(--info-bg); border:2px solid var(--border); border-radius:12px; padding:16px; overflow-x:auto; margin-bottom:14px; }
 table { width:100%; border-collapse:collapse; font-size:15px; }
-th { text-align:left; color:var(--text2); font-weight:700; padding:6px 11px; border-bottom:2px solid var(--border); font-size:13px; text-transform:uppercase; letter-spacing:.5px; }
-td { padding:7px 11px; font-family:'Courier New',monospace; border-bottom:1px solid #252530; }
+th { text-align:left; color:#fff; font-weight:700; padding:6px 11px; border-bottom:2px solid var(--border); font-size:13px; text-transform:uppercase; letter-spacing:.5px; }
+td { padding:7px 11px; font-family:'Courier New',monospace; border-bottom:1px solid #252530; color:#fff; }
 tr:last-child td { border-bottom:none; }
-td.ch-col { font-size:20px; font-weight:700; color:#fff; }
-td.code-col { color:var(--hl); letter-spacing:3px; font-size:16px; }
-td.freq-col { color:var(--leaf); }
+td.ch-col  { font-size:20px; font-weight:700; color:#fff; }
+td.code-col{ color:var(--hl); letter-spacing:3px; font-size:16px; }
+td.freq-col{ color:var(--leaf); }
 td.ord-col { color:var(--blue); }
 .bar { height:7px; border-radius:3px; background:linear-gradient(90deg,var(--leaf),#5aaaf0); transition:width .4s; min-width:2px; }
 
-.legend { display:flex; gap:20px; font-size:15px; color:var(--text2); flex-wrap:wrap; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
+.legend { display:flex; gap:20px; font-size:15px; color:#fff; flex-wrap:wrap; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
 .legend-item { display:flex; align-items:center; gap:7px; }
 .legend-dot { width:13px; height:13px; border-radius:50%; border:2px solid; flex-shrink:0; }
 
@@ -250,7 +273,7 @@ td.ord-col { color:var(--blue); }
 <body>
 <div class="container">
   <h1>🌿 Cây Huffman Thích Nghi</h1>
-  <div class="subtitle">Vitter's Adaptive Huffman · NYT + Swap · mã hóa tức thời từng ký tự</div>
+  <div class="subtitle">Adaptive Huffman · NYT (e0) luôn bên trái · ký tự mới luôn bên phải</div>
 
   <div id="string-display"></div>
   <div id="freq-table"></div>
@@ -263,6 +286,13 @@ td.ord-col { color:var(--blue); }
     <button id="btn-hello" class="btn btn-hl" onclick="addSample('HELLO WORLD',this)">▶ HELLO WORLD</button>
     <button class="btn btn-purple" onclick="toggleLib()">📚 Thư viện</button>
     <button class="btn btn-red"    onclick="resetAll()">✕ Xoá</button>
+  </div>
+
+  <div class="speed-row">
+    <span>⏱ Tốc độ demo:</span>
+    <input type="range" id="speed-slider" min="1" max="10" value="3" step="1" oninput="updateSpeedLabel()"/>
+    <span id="speed-label">400ms</span>
+    <span style="font-size:13px;color:#fff">← chậm &nbsp;·&nbsp; nhanh →</span>
   </div>
 
   <!-- LIBRARY -->
@@ -293,38 +323,61 @@ td.ord-col { color:var(--blue); }
   <!-- QUEUE -->
   <div id="queue-panel">
     <div class="queue-hdr">
-      <span>Hàng đợi</span>
-      <span class="queue-hint">Nhấn <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> để thêm ký tự tiếp theo</span>
+      <span>Hàng đợi ký tự</span>
+      <span class="queue-hint">Nhấn <kbd style="background:#2a2a38;border:1px solid #777;border-radius:4px;padding:1px 7px;font-family:monospace;color:#fff">Space</kbd> để thêm ký tự tiếp theo</span>
     </div>
     <div id="queue-chars"></div>
   </div>
 
   <!-- STEP LOG -->
-  <div id="step-log"><span style="color:var(--text2);font-size:13px">— nhật ký bước sẽ hiện ở đây —</span></div>
+  <div id="step-log"><span style="color:#fff;font-size:14px">— nhật ký bước sẽ hiện ở đây —</span></div>
 
   <div id="canvas-wrap">
     <canvas id="tree-canvas" height="280"></canvas>
-    <div id="empty-msg">Nhập ký tự để bắt đầu…</div>
+    <div id="empty-msg">Nhập ký tự để bắt đầu…<br><span style="font-size:13px;color:var(--text2)">Cây ban đầu: root → [NYT e0] bên trái</span></div>
   </div>
 
+  <!-- BIT PANEL -->
   <div id="bitstream-panel">
-    <div class="panel-title">Chuỗi bit phát ra (Vitter Adaptive)</div>
+    <div class="panel-title">Chuỗi bit phát ra</div>
     <div class="bitstream-row">
       <div class="bs-label">
         <span class="tag tag-ascii">ASCII gốc</span>
         8 bit/ký tự &nbsp;·&nbsp; <span id="ascii-len" style="color:var(--blue)">0 bits</span>
       </div>
-      <div class="bs-bits" id="ascii-bits"><span style="color:var(--text2);font-size:11px">—</span></div>
+      <div class="bs-bits" id="ascii-bits"><span style="color:#fff;font-size:13px">—</span></div>
     </div>
     <div class="bitstream-row">
       <div class="bs-label">
         <span class="tag tag-huff">Huffman Thích Nghi</span>
-        mã NYT + mã đường đi &nbsp;·&nbsp; <span id="huff-len" style="color:var(--leaf)">0 bits</span>
+        mã NYT path + ASCII thô &nbsp;·&nbsp; <span id="huff-len" style="color:var(--leaf)">0 bits</span>
       </div>
-      <div class="bs-bits" id="huff-bits"><span style="color:var(--text2);font-size:11px">—</span></div>
+      <div class="bs-bits" id="huff-bits"><span style="color:#fff;font-size:13px">—</span></div>
     </div>
   </div>
 
+  <!-- FORMULA PANEL -->
+  <div id="formula-panel">
+    <div class="panel-title">Công thức tính — realtime</div>
+    <div class="formula-grid">
+      <div class="f-card">
+        <div class="f-name">Bits gốc (ASCII 8-bit)</div>
+        <div class="f-body">n_ký_tự × 8<br>= <span class="v" id="fn">0</span> × 8</div>
+        <div class="f-result blue" id="f-raw">= 0 bits</div>
+      </div>
+      <div class="f-card">
+        <div class="f-name">Bits Huffman thích nghi</div>
+        <div class="f-body" id="f-huff-expr"><span>NYT_path + ASCII (ký tự mới)<br>hoặc path đến lá (đã biết)</span></div>
+        <div class="f-result green" id="f-huff">= 0 bits</div>
+      </div>
+    </div>
+    <div class="f-savings">
+      <div class="f-name">Tiết kiệm &amp; Tỉ lệ nén</div>
+      <div class="f-eq" id="f-eq"><span>—</span></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
   <div class="stats-grid">
     <div class="stat-card"><div class="lbl">Tổng ký tự</div><div class="val" id="s-total">0</div></div>
     <div class="stat-card"><div class="lbl">Số loại</div><div class="val" id="s-unique">0</div></div>
@@ -334,8 +387,9 @@ td.ord-col { color:var(--blue); }
     <div class="stat-card orange"><div class="lbl">Tỉ lệ nén</div><div class="val" id="s-ratio">—</div></div>
   </div>
 
+  <!-- CODE TABLE -->
   <div id="code-table-wrap">
-    <div class="panel-title" style="margin-bottom:9px">Bảng mã hiện tại &amp; order</div>
+    <div class="panel-title" style="margin-bottom:9px">Bảng mã hiện tại</div>
     <table>
       <thead><tr>
         <th>Ký tự</th><th>Tần suất</th><th>Mã Huffman</th><th>Độ dài</th><th>Order</th><th style="width:80px">Tần suất</th>
@@ -345,34 +399,36 @@ td.ord-col { color:var(--blue); }
   </div>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="border-color:var(--nyt);background:var(--nyt-fill)"></div>NYT (Not Yet Transmitted)</div>
-    <div class="legend-item"><div class="legend-dot" style="border-color:#5DCAA5;background:#0a3028"></div>Ký tự (leaf)</div>
-    <div class="legend-item"><div class="legend-dot" style="border-color:#AFA9EC;background:#1e1a40"></div>Nút trung gian</div>
-    <div class="legend-item"><span style="color:var(--swap);font-weight:700">⇄</span>&nbsp;= đổi chỗ xảy ra</div>
-    <div class="legend-item"><span style="color:#5b8cff;font-weight:700">0</span>&nbsp;= trái &nbsp; <span style="color:#ff6b6b;font-weight:700">1</span>&nbsp;= phải</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:var(--nyt);background:var(--nyt-fill)"></div>NYT e0 (Not Yet Transmitted) — luôn nhánh 0</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#4dffb8;background:#0a3028"></div>Ký tự (leaf)</div>
+    <div class="legend-item"><div class="legend-dot" style="border-color:#c4beff;background:#1e1a40"></div>Nút trung gian</div>
+    <div class="legend-item"><span style="color:var(--swap);font-weight:700">⇄</span>&nbsp;= đổi chỗ</div>
+    <div class="legend-item"><span style="color:#5b8cff;font-weight:700">0</span>&nbsp;= trái (NYT/nhẹ)&nbsp; <span style="color:#ff6b6b;font-weight:700">1</span>&nbsp;= phải (nặng)</div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  VITTER ADAPTIVE HUFFMAN ENGINE
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════
+//  ADAPTIVE HUFFMAN ENGINE
+//  Rules (theo sách):
+//  1. Cây ban đầu: root là internal node, left=NYT(e0), right=null
+//  2. Ký tự MỚI: phát [NYT_path + ASCII_8bit]
+//     → tách NYT: NYT mới đi LEFT (nhánh 0), lá ký tự đi RIGHT (nhánh 1)
+//  3. Ký tự ĐÃ BIẾT: phát path đến lá đó
+//  4. Sau khi phát: incrementNode từ lá/internal lên root (swap nếu vi phạm sibling property)
+//  5. NYT LUÔN ở nhánh 0 (trái) của cha nó
+// ═══════════════════════════════════════════════════════════════════════
 
-// Each node: { id, weight, order, sym, parent, left, right }
-// NYT node: sym = null, weight = 0
-// Internal: sym = null, weight = sum of children
-// Leaf: sym = char, weight >= 1
-
-let nodes = [];      // all nodes indexed by id
-let nytNode = null;  // current NYT node
+let nodes = [];
+let nytNode = null;
 let root = null;
-let nextOrder = 0;   // order counter (increases as tree grows)
-let symMap = {};     // char -> leaf node
+let nextOrder = 0;
+let symMap = {};
 let inputStr = '';
-let encodedBits = '';  // accumulated bits output
+let encodedBits = '';
 let logLines = [];
-let swappedNodes = new Set(); // ids that were just swapped (for flash anim)
+let swappedIds = new Set();
 
 const COLOURS = ['b0','b1','b2','b3','b4','b5','b6','b7','b8','b9'];
 
@@ -382,14 +438,19 @@ function mkNode(sym, weight, order) {
   return n;
 }
 
+// Khởi tạo: root = internal(weight=0), left=NYT, right=null
+// Cây "rỗng" ban đầu: chỉ có NYT ở vị trí root (chưa có ký tự nào)
+// Theo sách: ban đầu cây chỉ có 1 nút lá rỗng e0 (NYT) = root
 function initTree() {
-  nodes = []; symMap = {}; inputStr = ''; encodedBits = ''; logLines = []; swappedNodes = new Set();
+  nodes = []; symMap = {}; inputStr = ''; encodedBits = '';
+  logLines = []; swappedIds = new Set();
   nextOrder = 1;
+  // Ban đầu: chỉ có NYT là root
   nytNode = mkNode(null, 0, nextOrder++);
   root = nytNode;
 }
 
-// Get path from root to node (for encoding)
+// Lấy path bit từ root đến node (0=trái, 1=phải)
 function getCode(node) {
   if (node === root) return '';
   let bits = '';
@@ -401,132 +462,142 @@ function getCode(node) {
   return bits;
 }
 
-// Get all nodes with same weight as node, in order
-function sameWeightGroup(w) {
-  return nodes.filter(n => n.weight === w).sort((a,b) => b.order - a.order);
-}
-
-// Find highest-order node in same weight group (not ancestor of node)
-function findSwapTarget(node) {
-  const w = node.weight;
-  const group = nodes.filter(n => n.weight === w && n !== node && n !== node.parent).sort((a,b) => b.order - a.order);
-  return group.length ? group[0] : null;
-}
-
-// Check if a is ancestor of b
+// Kiểm tra a có phải tổ tiên của b không
 function isAncestor(a, b) {
   let cur = b;
   while (cur) { if (cur === a) return true; cur = cur.parent; }
   return false;
 }
 
-// Swap two nodes (exchange positions in tree, keep order numbers)
-function swapNodes(a, b) {
-  if (a === b || isAncestor(a, b) || isAncestor(b, a)) return;
-  swappedNodes.add(a.id);
-  swappedNodes.add(b.id);
+// Tìm node có order cao nhất trong cùng weight group (không phải tổ tiên của node)
+function findSwapTarget(node) {
+  let best = null;
+  for (const n of nodes) {
+    if (n === node) continue;
+    if (n.weight !== node.weight) continue;
+    if (n === node.parent) continue;
+    if (isAncestor(n, node)) continue;
+    if (!best || n.order > best.order) best = n;
+  }
+  return best;
+}
 
-  const pa = a.parent, pb = b.parent;
-  // swap orders
+// Hoán vị 2 node trong cây (giữ nguyên order, đổi vị trí)
+function swapNodes(a, b) {
+  if (a === b) return;
+  swappedIds.add(a.id);
+  swappedIds.add(b.id);
+
+  // Đổi order
   const tmpOrd = a.order; a.order = b.order; b.order = tmpOrd;
 
-  // rewire parents
+  const pa = a.parent, pb = b.parent;
+
+  // Đổi chỗ trong cha
   if (pa) { if (pa.left === a) pa.left = b; else pa.right = b; }
   if (pb) { if (pb.left === b) pb.left = a; else pb.right = a; }
   a.parent = pb;
   b.parent = pa;
+
   if (a === root) root = b;
   else if (b === root) root = a;
 }
 
-// Increment procedure (Vitter): walk up from node to root
-function incrementNode(node) {
-  let cur = node;
+// Tăng trọng số từ node lên root, swap nếu cần
+function incrementNode(startNode) {
+  let cur = startNode;
   while (cur) {
-    // find highest-order node with same weight (not ancestor)
     const target = findSwapTarget(cur);
     if (target && target !== cur.parent) {
-      const codeBeforeA = getCode(cur);
-      const codeBeforeB = getCode(target);
+      logLines.push(`  <span class="lo-swap">⇄ Swap</span> '${nodeLabel(cur)}' (ord ${cur.order}) ↔ '${nodeLabel(target)}' (ord ${target.order})`);
       swapNodes(cur, target);
-      logLines.push(`  <span class="lo-swap">⇄ Đổi chỗ</span> ${nodeLabel(cur)} (order ${cur.order}) ↔ ${nodeLabel(target)} (order ${target.order})`);
     }
     cur.weight++;
-    logLines.push(`  <span class="lo-inc">↑ Tăng weight</span> ${nodeLabel(cur)} → ${cur.weight}`);
+    logLines.push(`  <span class="lo-inc">↑ weight</span> ${nodeLabel(cur)} = ${cur.weight}`);
     cur = cur.parent;
   }
 }
 
 function nodeLabel(n) {
-  if (n.sym !== null) return `'<span class="lo-char">${n.sym === ' ' ? '␣' : n.sym}</span>'`;
   if (n === nytNode) return '<span class="lo-new">NYT</span>';
-  return `[${n.weight}]`;
+  if (n.sym !== null) return `'<span class="lo-char">${n.sym === ' ' ? '␣' : n.sym}</span>'`;
+  return `[w=${n.weight}]`;
 }
 
-// Process one character through Vitter algorithm
+// Proses 1 ký tự
 function processChar(ch) {
-  swappedNodes = new Set();
+  swappedIds = new Set();
   logLines = [];
   logLines.push(`▶ Ký tự: <span class="lo-char">${ch === ' ' ? '␣' : ch}</span>`);
 
   let code = '';
 
   if (symMap[ch]) {
-    // Already seen: encode path to leaf
+    // Đã có trong cây → phát path đến lá
     const leaf = symMap[ch];
     code = getCode(leaf);
-    logLines.push(`  Đã có trong cây → mã đường đi: <span class="lo-code">${code||'(gốc)'}</span>`);
+    logLines.push(`  Đã biết → path: <span class="lo-code">${code || '(root)'}</span>`);
     incrementNode(leaf);
-  } else {
-    // New character: encode path to NYT + 8-bit ASCII
-    const nytCode = getCode(nytNode);
-    const asciiCode = ch.charCodeAt(0).toString(2).padStart(8,'0');
-    code = nytCode + asciiCode;
-    logLines.push(`  Ký tự mới → NYT path: <span class="lo-code">${nytCode||'(gốc)'}</span> + ASCII: <span class="lo-code">${asciiCode}</span>`);
 
-    // Expand NYT: create new NYT and new leaf
+  } else {
+    // Ký tự mới → phát [NYT_path + ASCII 8-bit]
+    const nytCode = getCode(nytNode);
+    const asciiCode = ch.charCodeAt(0).toString(2).padStart(8, '0');
+    code = nytCode + asciiCode;
+    logLines.push(`  Ký tự mới → NYT path: <span class="lo-code">${nytCode || '(root)'}</span> + ASCII: <span class="lo-code">${asciiCode}</span>`);
+
+    // Tách NYT:
+    // - Tạo internal node thay thế NYT cũ
+    // - NYT mới → nhánh TRÁI (0) của internal
+    // - Lá ký tự → nhánh PHẢI (1) của internal
     const oldNYT = nytNode;
     const oldParent = oldNYT.parent;
-    const oldOrder = oldNYT.order;
 
-    // internal node replaces old NYT position
-    const internal = mkNode(null, 0, oldOrder);
+    // internal node kế thừa vị trí + order của NYT cũ
+    const internal = mkNode(null, 0, oldNYT.order);
+    // NYT mới có order cao hơn
     const newNYT = mkNode(null, 0, nextOrder++);
+    // Lá ký tự mới có order cao hơn NYT mới
     const leaf = mkNode(ch, 0, nextOrder++);
 
+    // Internal: left=NYT mới (nhánh 0), right=lá mới (nhánh 1)
     internal.left = newNYT;
     internal.right = leaf;
     newNYT.parent = internal;
     leaf.parent = internal;
 
+    // Gắn internal vào cây
     if (oldParent) {
       if (oldParent.left === oldNYT) oldParent.left = internal;
       else oldParent.right = internal;
       internal.parent = oldParent;
     } else {
+      // NYT cũ là root
       root = internal;
     }
 
     nytNode = newNYT;
     symMap[ch] = leaf;
 
-    logLines.push(`  Tách NYT → [NYT mới] + nút '${ch === ' ' ? '␣' : ch}'`);
-    incrementNode(leaf);
+    logLines.push(`  Tách NYT → [NYT mới]=nhánh 0, ['${ch === ' ' ? '␣' : ch}']=nhánh 1`);
+
+    // Tăng từ internal lên root (leaf mới weight=0, bắt đầu từ internal)
+    incrementNode(internal);
   }
 
   encodedBits += code;
   inputStr += ch;
-  logLines.push(`  Bits phát ra: <span class="lo-code">${code}</span> (tổng ${encodedBits.length} bits)`);
+  logLines.push(`  Bits phát: <span class="lo-code">${code}</span> · tổng ${encodedBits.length} bits`);
 }
 
-// Get code of a leaf from current tree
+// Lấy mã hiện tại của từng ký tự
 function getCurrentCodes() {
   const codes = {};
   function walk(n, path) {
     if (!n) return;
-    if (n.sym !== null) { codes[n.sym] = path; return; }
     if (n === nytNode) return;
-    walk(n.left, path + '0');
+    if (n.sym !== null) { codes[n.sym] = path; return; }
+    walk(n.left,  path + '0');
     walk(n.right, path + '1');
   }
   walk(root, '');
@@ -534,14 +605,17 @@ function getCurrentCodes() {
 }
 
 // ═══════════════════════════════════════════════════════
-//  ANIMATION ENGINE
+//  ANIMATION + RENDER ENGINE
 // ═══════════════════════════════════════════════════════
 const canvas = document.getElementById('tree-canvas');
 const ctx = canvas.getContext('2d');
 let prevLayout = {};
 let animRAF = null;
-const ANIM_MS = 400;
-function easeIO(t) { return t<.5?2*t*t:-1+(4-2*t)*t; }
+const ANIM_MS = 350;
+
+function easeIO(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+function getDepth(n) { if (!n) return 0; return 1 + Math.max(getDepth(n.left), getDepth(n.right)); }
 
 function computeLayout(rootNode) {
   if (!rootNode) return {};
@@ -549,12 +623,12 @@ function computeLayout(rootNode) {
   const pos = {};
   function lay(n, x, y, sp) {
     if (!n) return;
-    pos[n.id] = {x, y, node: n};
-    if (n.left)  lay(n.left,  x - sp, y + 76, sp * 0.54);
-    if (n.right) lay(n.right, x + sp, y + 76, sp * 0.54);
+    pos[n.id] = { x, y, node: n };
+    if (n.left)  lay(n.left,  x - sp, y + 82, sp * 0.54);
+    if (n.right) lay(n.right, x + sp, y + 82, sp * 0.54);
   }
-  const sp = Math.min(W / 2.6, 230);
-  lay(rootNode, W / 2, 46, sp);
+  const sp = Math.min(W / 2.5, 240);
+  lay(rootNode, W / 2, 48, sp);
   return pos;
 }
 
@@ -572,126 +646,151 @@ function startAnim(newLayout) {
     const e = easeIO(t);
     const W = canvas.parentElement.clientWidth || 800;
     const depth = getDepth(root);
-    const H = root ? Math.max(depth * 76 + 60, 200) : 220;
+    const H = root ? Math.max(depth * 82 + 60, 220) : 220;
     canvas.width = W; canvas.height = H; canvas.style.height = H + 'px';
     ctx.clearRect(0, 0, W, H);
-    document.getElementById('empty-msg').style.display = root ? 'none' : 'block';
-    if (!root) return;
+    document.getElementById('empty-msg').style.display = (root === nytNode) ? 'block' : 'none';
+
     const interp = {};
     for (const id in frames) {
       const f = frames[id];
-      interp[id] = { x: f.fromX+(f.toX-f.fromX)*e, y: f.fromY+(f.toY-f.fromY)*e, node: f.node, alpha: f.isNew ? e : 1 };
+      interp[id] = {
+        x: f.fromX + (f.toX - f.fromX) * e,
+        y: f.fromY + (f.toY - f.fromY) * e,
+        node: f.node,
+        alpha: f.isNew ? e : 1
+      };
     }
-    // edges
+
+    // Edges
     for (const id in interp) {
-      const {x, y, node, alpha} = interp[id];
-      for (const [child, lbl] of [[node.left,'0'],[node.right,'1']]) {
-        if (child && interp[child.id]) {
-          drawEdge(x, y, interp[child.id].x, interp[child.id].y, lbl, Math.min(alpha, interp[child.id].alpha));
+      const { x, y, node, alpha } = interp[id];
+      if (node.left && interp[node.left.id]) {
+        drawEdge(x, y, interp[node.left.id].x, interp[node.left.id].y, '0', Math.min(alpha, interp[node.left.id].alpha));
+      }
+      if (node.right && interp[node.right.id]) {
+        drawEdge(x, y, interp[node.right.id].x, interp[node.right.id].y, '1', Math.min(alpha, interp[node.right.id].alpha));
+      }
+    }
+
+    // Swap arrows
+    if (t > .08 && t < .92) {
+      for (const id in frames) {
+        const f = frames[id];
+        if (!f.isNew) {
+          const dx = f.toX - f.fromX, dy = f.toY - f.fromY;
+          if (Math.sqrt(dx*dx + dy*dy) > 30) {
+            drawSwapArrow(f.fromX, f.fromY, f.toX, f.toY, interp[id].x, interp[id].y, e);
+          }
         }
       }
     }
-    // move arrows
-    if (t > .05 && t < .95) {
-      for (const id in frames) {
-        const f = frames[id];
-        const dx = f.toX-f.fromX, dy = f.toY-f.fromY;
-        if (Math.sqrt(dx*dx+dy*dy) > 28 && !f.isNew) drawArrow(f.fromX,f.fromY,f.toX,f.toY,interp[id].x,interp[id].y,e);
-      }
-    }
-    // nodes
+
+    // Nodes
     for (const id in interp) {
-      const {x,y,node,alpha} = interp[id];
+      const { x, y, node, alpha } = interp[id];
       ctx.globalAlpha = alpha;
       drawNode(x, y, node);
       ctx.globalAlpha = 1;
     }
+
     if (t < 1) animRAF = requestAnimationFrame(tick);
     else {
       prevLayout = {};
-      for (const id in newLayout) prevLayout[id] = {x: newLayout[id].x, y: newLayout[id].y};
+      for (const id in newLayout) prevLayout[id] = { x: newLayout[id].x, y: newLayout[id].y };
       animRAF = null;
     }
   }
   animRAF = requestAnimationFrame(tick);
 }
 
-function drawArrow(fx,fy,tx,ty,cx,cy,t) {
-  const dx=tx-fx, dy=ty-fy, d=Math.sqrt(dx*dx+dy*dy);
-  if(d<1)return;
+function drawSwapArrow(fx, fy, tx, ty, cx, cy, t) {
+  const dx = tx-fx, dy = ty-fy, d = Math.sqrt(dx*dx+dy*dy);
+  if (d < 1) return;
   ctx.save();
-  ctx.globalAlpha=0.2*Math.sin(Math.PI*t);
-  ctx.setLineDash([4,5]); ctx.strokeStyle='#ff6b9d'; ctx.lineWidth=1.5;
-  ctx.beginPath(); ctx.moveTo(fx,fy); ctx.lineTo(tx,ty); ctx.stroke();
+  ctx.globalAlpha = 0.25 * Math.sin(Math.PI * t);
+  ctx.setLineDash([4,5]); ctx.strokeStyle = '#ff6b9d'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(fx, fy); ctx.lineTo(tx, ty); ctx.stroke();
   ctx.setLineDash([]);
-  const nx=dx/d,ny=dy/d;
-  ctx.globalAlpha=0.6*Math.sin(Math.PI*t); ctx.fillStyle='#ff6b9d';
+  const nx = dx/d, ny = dy/d;
+  ctx.globalAlpha = 0.65 * Math.sin(Math.PI * t);
+  ctx.fillStyle = '#ff6b9d';
   ctx.beginPath();
-  ctx.moveTo(cx+nx*10,cy+ny*10);
-  ctx.lineTo(cx-ny*5,cy+nx*5);
-  ctx.lineTo(cx+ny*5,cy-nx*5);
+  ctx.moveTo(cx + nx*11, cy + ny*11);
+  ctx.lineTo(cx - ny*5,  cy + nx*5);
+  ctx.lineTo(cx + ny*5,  cy - nx*5);
   ctx.closePath(); ctx.fill();
   ctx.restore();
 }
 
-function drawEdge(x1,y1,x2,y2,lbl,alpha) {
-  const R=22, dx=x2-x1, dy=y2-y1, d=Math.sqrt(dx*dx+dy*dy);
-  if(d<1)return;
-  ctx.save(); ctx.globalAlpha=alpha;
-  ctx.beginPath(); ctx.moveTo(x1+dx/d*R,y1+dy/d*R); ctx.lineTo(x2-dx/d*R,y2-dy/d*R);
-  ctx.strokeStyle='#333345'; ctx.lineWidth=1.2; ctx.stroke();
-  const mx=(x1+dx/d*R+x2-dx/d*R)/2, my=(y1+dy/d*R+y2-dy/d*R)/2;
-  ctx.font='600 28px monospace'; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillStyle = lbl==='0'?'#5b8cff':'#ff6b6b';
-  ctx.fillText(lbl, mx-dy/d*10, my+dx/d*10);
+function drawEdge(x1, y1, x2, y2, lbl, alpha) {
+  const R = 24, dx = x2-x1, dy = y2-y1, d = Math.sqrt(dx*dx+dy*dy);
+  if (d < 1) return;
+  ctx.save(); ctx.globalAlpha = alpha;
+  const sx = x1+dx/d*R, sy = y1+dy/d*R, ex = x2-dx/d*R, ey = y2-dy/d*R;
+  ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey);
+  ctx.strokeStyle = '#3a3a55'; ctx.lineWidth = 1.5; ctx.stroke();
+  const mx = (sx+ex)/2, my = (sy+ey)/2;
+  ctx.font = '700 16px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = lbl === '0' ? '#7eb8ff' : '#ff7070';
+  ctx.fillText(lbl, mx - dy/d*12, my + dx/d*12);
   ctx.restore();
 }
 
 function drawNode(x, y, node) {
-  const R=22;
-  const isNYT = (node === nytNode);
+  const R = 24;
+  const isNYT  = (node === nytNode);
   const isLeaf = (node.sym !== null);
-  const wasSwapped = swappedNodes.has(node.id);
+  const wasSwapped = swappedIds.has(node.id);
 
   let fill, stroke, lw;
-  if (isNYT)       { fill='#2a1a00'; stroke='#ff9f43'; lw=2.5; }
-  else if (isLeaf) { fill='#0a3028'; stroke=wasSwapped?'#ff6b9d':'#5DCAA5'; lw=wasSwapped?2.5:2; }
-  else             { fill='#1e1a40'; stroke=wasSwapped?'#ff6b9d':'#AFA9EC'; lw=wasSwapped?2.5:1.2; }
+  if (isNYT)       { fill = '#2a1a00'; stroke = wasSwapped ? '#ff6b9d' : '#ff9f43'; lw = 2.5; }
+  else if (isLeaf) { fill = '#0a3028'; stroke = wasSwapped ? '#ff6b9d' : '#4dffb8'; lw = wasSwapped ? 3 : 2; }
+  else             { fill = '#1e1a40'; stroke = wasSwapped ? '#ff6b9d' : '#c4beff'; lw = wasSwapped ? 3 : 1.5; }
 
-  ctx.beginPath(); ctx.arc(x,y,R,0,Math.PI*2);
-  ctx.fillStyle=fill; ctx.fill();
-  ctx.strokeStyle=stroke; ctx.lineWidth=lw; ctx.stroke();
-  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.beginPath(); ctx.arc(x, y, R, 0, Math.PI*2);
+  ctx.fillStyle = fill; ctx.fill();
+  ctx.strokeStyle = stroke; ctx.lineWidth = lw; ctx.stroke();
 
-  // order number (small, top-right)
-  ctx.font='400 9px monospace'; ctx.fillStyle='#666688';
-  ctx.fillText(node.order, x+16, y-16);
+  // Order badge (top-right nhỏ)
+  ctx.font = '400 10px monospace'; ctx.fillStyle = '#8888aa';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(node.order, x + 18, y - 18);
+
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
   if (isNYT) {
-    ctx.font='700 11px monospace'; ctx.fillStyle='#ff9f43';
-    ctx.fillText('NYT', x, y-5);
-    ctx.font='400 10px monospace'; ctx.fillStyle='#cc7a30';
-    ctx.fillText('e0', x, y+7);
+    ctx.font = '700 12px monospace'; ctx.fillStyle = '#ff9f43';
+    ctx.fillText('NYT', x, y - 6);
+    ctx.font = '500 11px monospace'; ctx.fillStyle = '#cc7a30';
+    ctx.fillText('e0', x, y + 8);
   } else if (isLeaf) {
-    ctx.font='700 19px monospace'; ctx.fillStyle='#5DCAA5';
-    ctx.fillText(node.sym===' '?'␣':node.sym, x, y-6);
-    ctx.font='400 14px monospace'; ctx.fillStyle='#3a9a78';
-    ctx.fillText(node.weight, x, y+8);
+    ctx.font = '800 18px monospace'; ctx.fillStyle = '#4dffb8';
+    ctx.fillText(node.sym === ' ' ? '␣' : node.sym, x, y - 6);
+    ctx.font = '600 13px monospace'; ctx.fillStyle = '#3adfaa';
+    ctx.fillText(node.weight, x, y + 9);
   } else {
-    ctx.font='600 20px monospace'; ctx.fillStyle='#AFA9EC';
+    ctx.font = '700 19px monospace'; ctx.fillStyle = '#c4beff';
     ctx.fillText(node.weight, x, y);
   }
 }
 
-function getDepth(n) { if(!n)return 0; return 1+Math.max(getDepth(n.left),getDepth(n.right)); }
-
 function renderTree() {
-  if (!root) {
-    const W=canvas.parentElement.clientWidth||800;
-    canvas.width=W; canvas.height=220; canvas.style.height='220px';
-    ctx.clearRect(0,0,W,220);
-    document.getElementById('empty-msg').style.display='block';
-    prevLayout={}; return;
+  const W = canvas.parentElement.clientWidth || 800;
+  if (!root || root === nytNode) {
+    // Hiển thị cây ban đầu chỉ có NYT
+    const H = 140;
+    canvas.width = W; canvas.height = H; canvas.style.height = H + 'px';
+    ctx.clearRect(0, 0, W, H);
+    // Vẽ NYT node ở giữa
+    ctx.globalAlpha = 1;
+    drawNode(W/2, 60, nytNode);
+    // Label "root"
+    ctx.font = '13px monospace'; ctx.fillStyle = '#888'; ctx.textAlign = 'center';
+    ctx.fillText('← root (NYT e0)', W/2 + 50, 62);
+    document.getElementById('empty-msg').style.display = 'none';
+    prevLayout = { [nytNode.id]: { x: W/2, y: 60 } };
+    return;
   }
   startAnim(computeLayout(root));
 }
@@ -702,65 +801,102 @@ function renderTree() {
 function update() {
   const codes = getCurrentCodes();
   const freqMap = {};
-  for (const id in symMap) { if (symMap[id]) freqMap[id] = symMap[id].weight; }
-  const entries = Object.entries(freqMap).sort((a,b)=>b[1]-a[1]);
-  const maxFreq = entries[0]?.[1]||1;
+  for (const ch in symMap) { if (symMap[ch]) freqMap[ch] = symMap[ch].weight; }
+  const entries = Object.entries(freqMap).sort((a, b) => b[1] - a[1]);
+  const maxFreq = entries[0]?.[1] || 1;
   const total = inputStr.length;
   const rawBits = total * 8;
   const huffBits = encodedBits.length;
   const saved = rawBits - huffBits;
-  const ratio = rawBits > 0 ? (saved/rawBits*100) : 0;
+  const ratio = rawBits > 0 ? (saved / rawBits * 100) : 0;
 
-  // string display
+  // String display
   const sd = document.getElementById('string-display');
-  const disp = inputStr.length>80 ? inputStr.slice(-80) : inputStr;
-  const spfx = inputStr.length>80 ? '<span style="color:var(--text2)">… </span>' : '';
-  sd.innerHTML = spfx + disp.split('').map((c,i)=>
-    `<span class="${i===disp.length-1&&inputStr.length>0?'ch-new':'ch'}">${c===' '?'&nbsp;':c}</span>`
+  const disp = inputStr.length > 80 ? inputStr.slice(-80) : inputStr;
+  const spfx = inputStr.length > 80 ? '<span style="color:var(--text2)">… </span>' : '';
+  sd.innerHTML = spfx + disp.split('').map((c, i) =>
+    `<span class="${i === disp.length-1 && inputStr.length > 0 ? 'ch-new' : 'ch'}">${c === ' ' ? '&nbsp;' : c}</span>`
   ).join('');
 
-  // freq chips
-  document.getElementById('freq-table').innerHTML = entries.map(([ch,f],i)=>{
+  // Freq chips
+  document.getElementById('freq-table').innerHTML = entries.map(([ch, f], i) => {
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
-    return `<div class="freq-chip ${cls}"><span class="ch">${ch===' '?'␣':ch}</span><span class="cnt">×${f}</span><span class="code">${codes[ch]||''}</span></div>`;
+    return `<div class="freq-chip ${cls}">
+      <span class="ch">${ch===' '?'␣':ch}</span>
+      <span class="cnt">×${f}</span>
+      <span class="code">${codes[ch]||''}</span>
+    </div>`;
   }).join('');
 
-  // log
+  // Log
   const log = document.getElementById('step-log');
   if (logLines.length) {
-    log.innerHTML = logLines.map(l=>`<div class="log-entry">${l}</div>`).join('');
+    log.innerHTML = logLines.map(l => `<div class="log-entry">${l}</div>`).join('');
     log.scrollTop = log.scrollHeight;
   }
 
-  // bits
+  // Bit streams
   if (total === 0) {
-    const ph = '<span style="color:var(--text2);font-size:11px">—</span>';
+    const ph = '<span style="color:#fff;font-size:13px">—</span>';
     document.getElementById('ascii-bits').innerHTML = ph;
-    document.getElementById('huff-bits').innerHTML = ph;
+    document.getElementById('huff-bits').innerHTML  = ph;
     document.getElementById('ascii-len').textContent = '0 bits';
-    document.getElementById('huff-len').textContent = '0 bits';
+    document.getElementById('huff-len').textContent  = '0 bits';
   } else {
     document.getElementById('ascii-bits').innerHTML = makeAsciiHTML(inputStr);
-    document.getElementById('huff-bits').innerHTML = makeHuffHTML(encodedBits, entries.map(([ch])=>ch));
+    document.getElementById('huff-bits').innerHTML  = makeHuffHTML(encodedBits);
     document.getElementById('ascii-len').textContent = rawBits + ' bits';
-    document.getElementById('huff-len').textContent = huffBits + ' bits';
-    ['ascii-bits','huff-bits'].forEach(id=>{const el=document.getElementById(id);el.scrollTop=el.scrollHeight;});
+    document.getElementById('huff-len').textContent  = huffBits + ' bits';
+    ['ascii-bits','huff-bits'].forEach(id => {
+      const el = document.getElementById(id); el.scrollTop = el.scrollHeight;
+    });
   }
 
-  // stats
-  document.getElementById('s-total').textContent = total;
-  document.getElementById('s-unique').textContent = Object.keys(freqMap).length;
-  document.getElementById('s-raw').textContent = rawBits;
-  document.getElementById('s-huff').textContent = huffBits;
-  document.getElementById('s-save').textContent = saved>0?saved+' bits':'—';
-  document.getElementById('s-ratio').textContent = rawBits>0?ratio.toFixed(1)+'%':'—';
+  // Formula
+  document.getElementById('fn').textContent = total;
+  document.getElementById('f-raw').textContent = '= ' + rawBits + ' bits';
+  document.getElementById('f-huff').textContent = '= ' + huffBits + ' bits';
+  // Build Huffman expr: tóm tắt breakdown
+  const exprParts = entries.map(([ch, f]) => {
+    const code = codes[ch] || '?';
+    return `${ch===' '?'␣':ch}:${f}×${code.length}`;
+  });
+  document.getElementById('f-huff-expr').innerHTML =
+    '<span style="font-size:13px;color:#fff">' +
+    (exprParts.length ? exprParts.join(' + ') + '<br>= Σ(freq × len)' : 'NYT_path + ASCII (ký tự mới)<br>hoặc path đến lá (đã biết)') +
+    '</span>';
 
-  // code table
-  document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
-    const code = codes[ch]||'?';
+  const fEq = document.getElementById('f-eq');
+  if (total === 0) {
+    fEq.innerHTML = '<span>—</span>';
+  } else {
+    const rStr = ratio.toFixed(1);
+    const savCls = saved >= 0 ? 'res' : 'neg';
+    const ratCls = ratio >= 0 ? 'pct' : 'neg';
+    fEq.innerHTML =
+      `<span class="sym">Tiết kiệm</span><span class="sym">=</span>` +
+      `<span class="v">${rawBits}</span><span class="sym">−</span><span class="v">${huffBits}</span>` +
+      `<span class="sym">=</span><span class="${savCls}">${saved} bits</span>` +
+      `<span class="sep2"></span>` +
+      `<span class="sym">Tỉ lệ nén</span><span class="sym">=</span>` +
+      `<span class="sym">(${saved} ÷ ${rawBits}) × 100</span>` +
+      `<span class="sym">=</span><span class="${ratCls}">${rStr}%</span>`;
+  }
+
+  // Stats
+  document.getElementById('s-total').textContent  = total;
+  document.getElementById('s-unique').textContent = Object.keys(freqMap).length;
+  document.getElementById('s-raw').textContent    = rawBits;
+  document.getElementById('s-huff').textContent   = huffBits;
+  document.getElementById('s-save').textContent   = saved > 0 ? saved + ' bits' : '—';
+  document.getElementById('s-ratio').textContent  = rawBits > 0 ? ratio.toFixed(1) + '%' : '—';
+
+  // Code table
+  document.getElementById('code-tbody').innerHTML = entries.map(([ch, f]) => {
+    const code = codes[ch] || '?';
     const node = symMap[ch];
     const order = node ? node.order : '?';
-    const barW = Math.round(f/maxFreq*100);
+    const barW = Math.round(f / maxFreq * 100);
     return `<tr>
       <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
       <td class="freq-col">${f}</td>
@@ -775,172 +911,216 @@ function update() {
 }
 
 function makeAsciiHTML(str) {
-  const uniq=[...new Set(str.split(''))];
-  const cm={}; uniq.forEach((c,i)=>cm[c]=COLOURS[i%COLOURS.length]);
-  const src=str.length>80?str.slice(-80):str;
-  const pfx=str.length>80?'<span style="color:var(--text2)">…</span>':'';
-  return pfx+src.split('').map(c=>`<span class="${cm[c]}">${c.charCodeAt(0).toString(2).padStart(8,'0')}</span><span class="sep"> </span>`).join('');
+  const uniq = [...new Set(str.split(''))];
+  const cm = {}; uniq.forEach((c, i) => cm[c] = COLOURS[i % COLOURS.length]);
+  const src = str.length > 80 ? str.slice(-80) : str;
+  const pfx = str.length > 80 ? '<span style="color:var(--text2)">…</span>' : '';
+  return pfx + src.split('').map(c =>
+    `<span class="${cm[c]}">${c.charCodeAt(0).toString(2).padStart(8,'0')}</span><span class="sep"> </span>`
+  ).join('');
 }
-function makeHuffHTML(bits, chars) {
-  if (!bits) return '<span style="color:var(--text2);font-size:11px">—</span>';
-  const display = bits.length > 320 ? '…'+bits.slice(-320) : bits;
-  return display.split('').map((b,i)=>`<span style="color:${b==='0'?'#80c8ff':'#ff9090'}">${b}</span>`).join('');
+
+function makeHuffHTML(bits) {
+  if (!bits) return '<span style="color:#fff;font-size:13px">—</span>';
+  const display = bits.length > 320 ? '…' + bits.slice(-320) : bits;
+  return display.split('').map(b =>
+    `<span style="color:${b==='0'?'#80c8ff':'#ff9090'}">${b}</span>`
+  ).join('');
 }
 
 // ═══════════════════════════════════════════════════════
-//  QUEUE & ACTIONS
+//  QUEUE & SAMPLE ACTIONS
 // ═══════════════════════════════════════════════════════
-let queue=[], activeSampleBtn=null;
+let queue = [], activeSampleBtn = null, sampleTimer = null;
+
+function getDelay() {
+  const v = +document.getElementById('speed-slider').value;
+  return Math.round(900 * Math.pow(0.085, (v-1)/9));
+}
+function updateSpeedLabel() {
+  const d = getDelay();
+  document.getElementById('speed-label').textContent = d >= 1000 ? (d/1000).toFixed(1)+'s' : d+'ms';
+}
+updateSpeedLabel();
 
 function renderQueue() {
-  const panel=document.getElementById('queue-panel');
-  const container=document.getElementById('queue-chars');
-  if(!queue.length){
+  const panel = document.getElementById('queue-panel');
+  const container = document.getElementById('queue-chars');
+  if (!queue.length) {
     panel.classList.remove('visible');
-    if(activeSampleBtn){activeSampleBtn.classList.remove('active');activeSampleBtn=null;}
+    if (activeSampleBtn) { activeSampleBtn.classList.remove('active'); activeSampleBtn = null; }
     return;
   }
   panel.classList.add('visible');
-  container.innerHTML=queue.map((c,i)=>`<div class="q-char ${i===0?'next':''}" id="qc-${i}">${c===' '?'␣':c}</div>`).join('');
+  container.innerHTML = queue.map((c, i) =>
+    `<div class="q-char ${i===0?'next':''}" id="qc-${i}">${c===' '?'␣':c}</div>`
+  ).join('');
 }
 
 function dequeueOne() {
-  if(!queue.length)return;
-  const el=document.getElementById('qc-0');
-  const doIt=()=>{ const c=queue.shift(); processChar(c); update(); renderQueue(); };
-  if(el){ el.classList.add('gone'); setTimeout(doIt,200); } else doIt();
+  if (!queue.length) return;
+  const el = document.getElementById('qc-0');
+  const doIt = () => { const c = queue.shift(); processChar(c); update(); renderQueue(); };
+  if (el) { el.classList.add('gone'); setTimeout(doIt, 200); } else doIt();
 }
 
-document.addEventListener('keydown',e=>{
-  if(e.code==='Space'){
-    const active=document.activeElement;
-    if(active===document.getElementById('char-input')||active===document.getElementById('lib-str')||active===document.getElementById('lib-name'))return;
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    const active = document.activeElement;
+    if (active === document.getElementById('char-input') ||
+        active === document.getElementById('lib-str') ||
+        active === document.getElementById('lib-name')) return;
     e.preventDefault();
     dequeueOne();
   }
-  if(e.key==='Enter'&&document.activeElement===document.getElementById('char-input')) addChar();
+  if (e.key === 'Enter' && document.activeElement === document.getElementById('char-input')) addChar();
 });
 
-const charInput=document.getElementById('char-input');
-function addChar(){
-  const c=charInput.value; if(!c)return;
+const charInput = document.getElementById('char-input');
+
+function addChar() {
+  const c = charInput.value; if (!c) return;
   processChar(c); update();
-  charInput.value=''; charInput.focus();
+  charInput.value = ''; charInput.focus();
 }
-function addSample(str,btn){
-  resetAll(); queue=str.split('');
-  activeSampleBtn=btn; btn.classList.add('active');
+
+function addSample(str, btn) {
+  if (sampleTimer) clearInterval(sampleTimer);
+  resetAll();
+  queue = str.split('');
+  // Auto-dequeue theo speed
+  sampleTimer = setInterval(() => {
+    if (!queue.length) { clearInterval(sampleTimer); sampleTimer = null; return; }
+    dequeueOne();
+  }, getDelay());
+  activeSampleBtn = btn; btn.classList.add('active');
   renderQueue(); charInput.blur();
 }
-function resetAll(){
-  if(activeSampleBtn){activeSampleBtn.classList.remove('active');activeSampleBtn=null;}
-  queue=[];
-  initTree(); prevLayout={};
+
+function resetAll() {
+  if (sampleTimer) { clearInterval(sampleTimer); sampleTimer = null; }
+  if (activeSampleBtn) { activeSampleBtn.classList.remove('active'); activeSampleBtn = null; }
+  queue = [];
+  initTree(); prevLayout = {};
   renderQueue();
-  document.getElementById('step-log').innerHTML='<span style="color:var(--text2);font-size:13px">— nhật ký bước sẽ hiện ở đây —</span>';
-  document.getElementById('string-display').innerHTML='';
-  document.getElementById('freq-table').innerHTML='';
-  const ph='<span style="color:var(--text2);font-size:11px">—</span>';
-  document.getElementById('ascii-bits').innerHTML=ph;
-  document.getElementById('huff-bits').innerHTML=ph;
-  document.getElementById('ascii-len').textContent='0 bits';
-  document.getElementById('huff-len').textContent='0 bits';
-  document.getElementById('s-total').textContent='0';
-  document.getElementById('s-unique').textContent='0';
-  document.getElementById('s-raw').textContent='0';
-  document.getElementById('s-huff').textContent='0';
-  document.getElementById('s-save').textContent='—';
-  document.getElementById('s-ratio').textContent='—';
-  document.getElementById('code-tbody').innerHTML='';
+  document.getElementById('step-log').innerHTML = '<span style="color:#fff;font-size:14px">— nhật ký bước sẽ hiện ở đây —</span>';
+  document.getElementById('string-display').innerHTML = '';
+  document.getElementById('freq-table').innerHTML = '';
+  const ph = '<span style="color:#fff;font-size:13px">—</span>';
+  document.getElementById('ascii-bits').innerHTML = ph;
+  document.getElementById('huff-bits').innerHTML  = ph;
+  document.getElementById('ascii-len').textContent = '0 bits';
+  document.getElementById('huff-len').textContent  = '0 bits';
+  ['s-total','s-unique','s-raw','s-huff'].forEach(id => document.getElementById(id).textContent = '0');
+  document.getElementById('s-save').textContent  = '—';
+  document.getElementById('s-ratio').textContent = '—';
+  document.getElementById('code-tbody').innerHTML = '';
+  document.getElementById('f-eq').innerHTML = '<span>—</span>';
+  document.getElementById('f-raw').textContent = '= 0 bits';
+  document.getElementById('f-huff').textContent = '= 0 bits';
+  document.getElementById('fn').textContent = '0';
   renderTree();
   charInput.focus();
 }
 
-window.addEventListener('resize',()=>renderTree());
+window.addEventListener('resize', () => renderTree());
 
 // ═══════════════════════════════════════════════════════
 //  LIBRARY
 // ═══════════════════════════════════════════════════════
-const LIB_KEY='huffman_vitter_lib';
-let library=[], editingId=null;
-function libLoad(){ try{library=JSON.parse(localStorage.getItem(LIB_KEY))||[];}catch{library=[];} }
-function libSaveStorage(){ try{localStorage.setItem(LIB_KEY,JSON.stringify(library));}catch{} }
-function libRender(){
-  document.getElementById('lib-count').textContent=library.length;
-  const el=document.getElementById('lib-items');
-  if(!library.length){el.innerHTML='<div class="lib-empty">Chưa có chuỗi nào.</div>';return;}
-  el.innerHTML=library.map((item,i)=>`
+const LIB_KEY = 'huffman_adaptive_lib';
+let library = [], editingId = null;
+
+function libLoad() { try { library = JSON.parse(localStorage.getItem(LIB_KEY)) || []; } catch { library = []; } }
+function libSaveStorage() { try { localStorage.setItem(LIB_KEY, JSON.stringify(library)); } catch {} }
+function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function libRender() {
+  document.getElementById('lib-count').textContent = library.length;
+  const el = document.getElementById('lib-items');
+  if (!library.length) { el.innerHTML = '<div class="lib-empty">Chưa có chuỗi nào.</div>'; return; }
+  el.innerHTML = library.map((item, i) => `
     <div class="lib-item" style="${editingId===item.id?'border-color:var(--purple)':''}">
       <div class="lib-item-info">
         <div class="lib-item-name">${escH(item.name)}</div>
         <div class="lib-item-str">${escH(item.str.replace(/ /g,'␣').slice(0,40))}${item.str.length>40?'…':''}</div>
       </div>
       <div class="lib-item-actions">
-        <div class="lib-act-btn use" title="Dùng" onclick="libUse(${i})">▶</div>
-        <div class="lib-act-btn edit" title="Sửa" onclick="libEdit(${i})">✎</div>
-        <div class="lib-act-btn del" title="Xoá" onclick="libDelete(${i})">✕</div>
+        <div class="lib-act-btn use"  onclick="libUse(${i})">▶</div>
+        <div class="lib-act-btn edit" onclick="libEdit(${i})">✎</div>
+        <div class="lib-act-btn del"  onclick="libDelete(${i})">✕</div>
       </div>
     </div>`).join('');
 }
-function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function libPreview(){
-  const s=document.getElementById('lib-str').value;
-  document.getElementById('lib-len').textContent=s.length;
-  document.getElementById('lib-uniq').textContent=new Set(s.split('')).size;
+
+function libPreview() {
+  const s = document.getElementById('lib-str').value;
+  document.getElementById('lib-len').textContent  = s.length;
+  document.getElementById('lib-uniq').textContent = new Set(s.split('')).size;
 }
-function libSave(){
-  const name=document.getElementById('lib-name').value.trim();
-  const str=document.getElementById('lib-str').value;
-  if(!str){showToast('Chuỗi không được để trống!');return;}
-  const finalName=name||('Chuỗi '+(library.length+1));
-  if(editingId!==null){
-    const idx=library.findIndex(x=>x.id===editingId);
-    if(idx>=0){library[idx].name=finalName;library[idx].str=str;}
-    editingId=null; showToast('Đã cập nhật: '+finalName);
+
+function libSave() {
+  const name = document.getElementById('lib-name').value.trim();
+  const str  = document.getElementById('lib-str').value;
+  if (!str) { showToast('Chuỗi không được để trống!'); return; }
+  const finalName = name || ('Chuỗi ' + (library.length + 1));
+  if (editingId !== null) {
+    const idx = library.findIndex(x => x.id === editingId);
+    if (idx >= 0) { library[idx].name = finalName; library[idx].str = str; }
+    editingId = null; showToast('Đã cập nhật: ' + finalName);
   } else {
-    library.push({id:Date.now(),name:finalName,str});
-    showToast('Đã lưu: '+finalName);
+    library.push({ id: Date.now(), name: finalName, str });
+    showToast('Đã lưu: ' + finalName);
   }
   libSaveStorage(); libRender(); libClearComposer();
 }
-function libClearComposer(){
-  document.getElementById('lib-name').value='';
-  document.getElementById('lib-str').value='';
-  document.getElementById('lib-len').textContent='0';
-  document.getElementById('lib-uniq').textContent='0';
-  editingId=null; libRender();
-}
-function libEdit(i){
-  const item=library[i];
-  document.getElementById('lib-name').value=item.name;
-  document.getElementById('lib-str').value=item.str;
-  editingId=item.id; libPreview(); libRender();
-  document.getElementById('lib-str').focus();
-}
-function libDelete(i){
-  const name=library[i].name;
-  if(editingId===library[i].id)libClearComposer();
-  library.splice(i,1); libSaveStorage(); libRender();
-  showToast('Đã xoá: '+name);
-}
-function libUse(i){ addSample(library[i].str,{classList:{add:()=>{},remove:()=>{}}}); showToast('Đang dùng: '+library[i].name); }
-function libUseComposer(){
-  const str=document.getElementById('lib-str').value;
-  if(!str){showToast('Chưa có chuỗi!');return;}
-  addSample(str,{classList:{add:()=>{},remove:()=>{}}});
-}
-function toggleLib(){
-  const p=document.getElementById('lib-panel');
-  p.classList.toggle('open');
-  if(p.classList.contains('open'))libRender();
+
+function libClearComposer() {
+  document.getElementById('lib-name').value = '';
+  document.getElementById('lib-str').value  = '';
+  document.getElementById('lib-len').textContent  = '0';
+  document.getElementById('lib-uniq').textContent = '0';
+  editingId = null; libRender();
 }
 
-let toastTimer=null;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  if(toastTimer)clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+function libEdit(i) {
+  const item = library[i];
+  document.getElementById('lib-name').value = item.name;
+  document.getElementById('lib-str').value  = item.str;
+  editingId = item.id; libPreview(); libRender();
+  document.getElementById('lib-str').focus();
+}
+
+function libDelete(i) {
+  const name = library[i].name;
+  if (editingId === library[i].id) libClearComposer();
+  library.splice(i, 1); libSaveStorage(); libRender();
+  showToast('Đã xoá: ' + name);
+}
+
+function libUse(i) {
+  addSample(library[i].str, { classList: { add: ()=>{}, remove: ()=>{} } });
+  showToast('Đang dùng: ' + library[i].name);
+}
+
+function libUseComposer() {
+  const str = document.getElementById('lib-str').value;
+  if (!str) { showToast('Chưa có chuỗi!'); return; }
+  addSample(str, { classList: { add: ()=>{}, remove: ()=>{} } });
+}
+
+function toggleLib() {
+  const p = document.getElementById('lib-panel');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) libRender();
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 // ═══════════════════════════════════════════════════════
