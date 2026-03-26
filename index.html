@@ -253,13 +253,7 @@ td.ord-col { color:var(--blue); }
     </div>
   </div>
 
-  <div id="queue-panel">
-    <div class="queue-hdr">
-      <span>Queue</span>
-      <span class="queue-hint" id="queue-hint">Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character</span>
-    </div>
-    <div id="queue-chars"></div>
-  </div>
+  
 
   <div id="step-log"><span style="color:var(--text2);font-size:13px">— step log will appear here —</span></div>
 
@@ -267,7 +261,13 @@ td.ord-col { color:var(--blue); }
     <canvas id="tree-canvas" height="280"></canvas>
     <div id="empty-msg">Enter a character to begin…</div>
   </div>
-
+  <div id="queue-panel">
+    <div class="queue-hdr">
+      <span>Queue</span>
+      <span class="queue-hint" id="queue-hint">Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character</span>
+    </div>
+    <div id="queue-chars"></div>
+  </div>
   <div id="bitstream-panel">
     <div class="panel-title">Encoded bitstream (Vitter Adaptive)</div>
     <div class="bitstream-row">
@@ -293,16 +293,6 @@ td.ord-col { color:var(--blue); }
     <div class="stat-card"><div class="lbl">Huffman bits</div><div class="val" id="s-huff">0</div></div>
     <div class="stat-card green"><div class="lbl">Saved</div><div class="val" id="s-save">—</div></div>
     <div class="stat-card orange"><div class="lbl">Ratio</div><div class="val" id="s-ratio">—</div></div>
-  </div>
-
-  <div id="code-table-wrap">
-    <div class="panel-title" style="margin-bottom:9px">Current codebook &amp; order</div>
-    <table>
-      <thead><tr>
-        <th>Char</th><th>Freq</th><th>Huffman code</th><th>Length</th><th>Order</th><th style="width:80px">Bar</th>
-      </tr></thead>
-      <tbody id="code-tbody"></tbody>
-    </table>
   </div>
 
   <div class="legend">
@@ -799,20 +789,7 @@ function update() {
   document.getElementById('s-save').textContent = saved>0?saved+' bits':'—';
   document.getElementById('s-ratio').textContent = rawBits>0?ratio.toFixed(1)+'%':'—';
 
-  document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
-    const code = codes[ch]||'?';
-    const node = symMap[ch];
-    const order = node ? node.ord : '?';
-    const barW = Math.round(f/maxFreq*100);
-    return `<tr>
-      <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
-      <td class="freq-col">${f}</td>
-      <td class="code-col">${code}</td>
-      <td>${code.length} bit</td>
-      <td class="ord-col">${order}</td>
-      <td><div class="bar" style="width:${barW}%"></div></td>
-    </tr>`;
-  }).join('');
+  
 
   renderTree();
 }
@@ -953,7 +930,6 @@ function resetAll() {
   document.getElementById('s-huff').textContent = '0';
   document.getElementById('s-save').textContent = '—';
   document.getElementById('s-ratio').textContent = '—';
-  document.getElementById('code-tbody').innerHTML = '';
   renderTree();
   charInput.focus();
 }
