@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +25,6 @@ body {
 h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .subtitle { font-size:15px; color:var(--text2); margin-bottom:20px; }
 .container { width:100%; max-width:1100px; }
-
 .btn {
   height:48px; padding:0 18px; border-radius:10px; font-size:15px; font-weight:600;
   cursor:pointer; border:2px solid var(--border); background:var(--bg3);
@@ -42,7 +41,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .btn-hl.active { background:#2a2010; border-width:3px; }
 .btn-purple { border-color:var(--purple); color:var(--purple); }
 .btn-purple:hover { background:#1e1a40; }
-
 .big-input {
   width:72px; height:48px; font-size:32px; font-weight:700;
   text-align:center; background:var(--bg3); color:#fff;
@@ -50,22 +48,7 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
   outline:none; font-family:'Courier New',monospace; transition:border-color .2s;
 }
 .big-input:focus { border-color:var(--leaf); }
-
 .input-row { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
-
-/* ALGO toggle */
-.algo-row {
-  display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;
-}
-.algo-label { font-size:14px; color:var(--text2); }
-.algo-btn {
-  height:34px; padding:0 14px; border-radius:8px; font-size:13px; font-weight:600;
-  cursor:pointer; border:2px solid var(--border); background:var(--bg3); color:var(--text2);
-  transition:all .15s;
-}
-.algo-btn.sel { border-color:var(--hl); color:var(--hl); background:#2a2010; }
-
-/* LIBRARY */
 #lib-panel {
   border:2px solid var(--purple); border-radius:14px;
   background:var(--info-bg); margin-bottom:16px;
@@ -130,8 +113,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .lib-act-btn.del { border-color:var(--red); color:var(--red); }
 .lib-act-btn.del:hover { background:#2a1515; }
 .lib-empty { color:var(--text2); font-size:14px; padding:20px 0; text-align:center; }
-
-/* QUEUE */
 #queue-panel {
   display:none; background:var(--bg3); border:2px solid var(--hl);
   border-radius:12px; padding:12px 16px; margin-bottom:12px;
@@ -148,8 +129,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 }
 .q-char.next { border-color:var(--leaf); background:var(--leaf-fill); color:var(--leaf); transform:scale(1.15); }
 .q-char.gone { opacity:0; transform:scale(.5) translateY(-10px); }
-
-/* STEP LOG */
 #step-log {
   background:var(--info-bg); border:2px solid var(--border); border-radius:12px;
   padding:12px 16px; margin-bottom:14px; max-height:140px; overflow-y:auto;
@@ -161,8 +140,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .log-entry .lo-code { color:var(--hl); letter-spacing:2px; }
 .log-entry .lo-swap { color:var(--swap); }
 .log-entry .lo-inc { color:var(--leaf); }
-
-/* STRING DISPLAY */
 #string-display {
   font-family:'Courier New',monospace; font-size:17px; letter-spacing:3px;
   color:#fff; margin-bottom:8px; min-height:22px; word-break:break-all; line-height:1.8;
@@ -170,8 +147,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 #string-display .ch { color:#fff; }
 #string-display .ch-new { color:var(--hl); animation:popIn .3s ease; }
 @keyframes popIn { 0%{transform:scale(1.8);opacity:0} 60%{transform:scale(.9)} 100%{transform:scale(1);opacity:1} }
-
-/* FREQ CHIPS */
 #freq-table { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:14px; min-height:36px; align-items:center; }
 .freq-chip {
   display:flex; align-items:center; gap:5px; padding:6px 14px;
@@ -184,8 +159,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .freq-chip.top1 { border-color:var(--leaf); background:var(--leaf-fill); }
 .freq-chip.top2 { border-color:#5aaaf0; background:#0c2033; }
 .freq-chip.top3 { border-color:#e09040; background:#251808; }
-
-/* CANVAS */
 #canvas-wrap {
   border:2px solid var(--border); border-radius:14px;
   background:var(--bg2); overflow:hidden; margin-bottom:14px; position:relative;
@@ -195,8 +168,6 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   color:var(--text2); font-size:17px; pointer-events:none; text-align:center;
 }
-
-/* BIT PANEL */
 #bitstream-panel { border:2px solid var(--border); border-radius:12px; background:var(--info-bg); padding:16px 18px; margin-bottom:14px; }
 .panel-title { font-size:14px; color:var(--text2); font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
 .bitstream-row { margin-bottom:12px; }
@@ -213,16 +184,12 @@ h1 { font-size:30px; font-weight:700; letter-spacing:-.5px; margin-bottom:4px; }
 .b0{color:#80c8ff}.b1{color:#ff9090}.b2{color:#60ffcc}.b3{color:#ffcc60}.b4{color:#d0a8ff}
 .b5{color:#ffff60}.b6{color:#80e0ff}.b7{color:#ffb0e0}.b8{color:#80ffcc}.b9{color:#ffd080}
 .sep{color:#555568;margin:0 2px;user-select:none;}
-
-/* STATS */
 .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:9px; margin-bottom:14px; }
 .stat-card { background:var(--info-bg); border:2px solid var(--border); border-radius:11px; padding:12px 14px; }
 .stat-card .lbl { font-size:13px; color:var(--text2); margin-bottom:5px; }
 .stat-card .val { font-size:24px; font-weight:700; color:#fff; font-family:'Courier New',monospace; }
 .stat-card.green .val { color:var(--leaf); }
 .stat-card.orange .val { color:var(--hl); }
-
-/* CODE TABLE */
 #code-table-wrap { background:var(--info-bg); border:2px solid var(--border); border-radius:12px; padding:16px; overflow-x:auto; margin-bottom:14px; }
 table { width:100%; border-collapse:collapse; font-size:15px; }
 th { text-align:left; color:var(--text2); font-weight:700; padding:6px 11px; border-bottom:2px solid var(--border); font-size:13px; text-transform:uppercase; letter-spacing:.5px; }
@@ -233,11 +200,9 @@ td.code-col { color:var(--hl); letter-spacing:3px; font-size:16px; }
 td.freq-col { color:var(--leaf); }
 td.ord-col { color:var(--blue); }
 .bar { height:7px; border-radius:3px; background:linear-gradient(90deg,var(--leaf),#5aaaf0); transition:width .4s; min-width:2px; }
-
 .legend { display:flex; gap:20px; font-size:15px; color:var(--text2); flex-wrap:wrap; margin-top:12px; padding-top:12px; border-top:1px solid var(--border); }
 .legend-item { display:flex; align-items:center; gap:7px; }
 .legend-dot { width:13px; height:13px; border-radius:50%; border:2px solid; flex-shrink:0; }
-
 .toast {
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(60px);
   background:#1e1a40; border:2px solid var(--purple); color:var(--purple);
@@ -250,6 +215,7 @@ td.ord-col { color:var(--blue); }
 <body>
 <div class="container">
   <h1>🌿 Adaptive Huffman Tree</h1>
+  <div class="subtitle">Vitter's Adaptive Huffman · NYT + Swap · real-time per-character encoding</div>
 
   <div id="string-display"></div>
   <div id="freq-table"></div>
@@ -264,7 +230,6 @@ td.ord-col { color:var(--blue); }
     <button class="btn btn-red"    onclick="resetAll()">✕ Reset</button>
   </div>
 
-  <!-- LIBRARY -->
   <div id="lib-panel">
     <div class="lib-header">
       <span class="lib-title">📚 String Library</span>
@@ -289,16 +254,14 @@ td.ord-col { color:var(--blue); }
     </div>
   </div>
 
-  <!-- QUEUE -->
   <div id="queue-panel">
     <div class="queue-hdr">
       <span>Queue</span>
-      <span class="queue-hint">Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character</span>
+      <span class="queue-hint" id="queue-hint">Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character</span>
     </div>
     <div id="queue-chars"></div>
   </div>
 
-  <!-- STEP LOG -->
   <div id="step-log"><span style="color:var(--text2);font-size:13px">— step log will appear here —</span></div>
 
   <div id="canvas-wrap">
@@ -355,10 +318,7 @@ td.ord-col { color:var(--blue); }
 
 <script>
 // ═══════════════════════════════════════════════════════
-//  ADAPTIVE HUFFMAN ENGINE (FGK/Vitter)
-//  Node: {id, sym, w, ord, parent, left, right, alive}
-//  ord: giảm dần (512,511,...) — node tạo trước = ord cao = ưu tiên cao hơn
-//  findSwapTarget: tìm node ord CAO NHẤT cùng weight (không phải ancestor, không phải NYT)
+//  ADAPTIVE HUFFMAN ENGINE (Vitter)
 // ═══════════════════════════════════════════════════════
 
 let nodes = [];
@@ -367,11 +327,25 @@ let root = null;
 let nextOrd = 512;
 let symMap = {};
 let inputStr = '';
-let encodedBits = '';   // raw 0/1 bit string
-let encodedLog = [];    // [{ch, bits, isNew}] for per-char coloring
+let encodedBits = '';
+let encodedLog = [];
 let logLines = [];
 let swappedNodes = new Set();
 const COLOURS = ['b0','b1','b2','b3','b4','b5','b6','b7','b8','b9'];
+
+// ── 2-phase state ──────────────────────────────────────
+// Phase 1 (Space 1): insert new node into tree, show it, wait
+// Phase 2 (Space 2): run incrementNode (swaps + weight updates)
+// For existing chars: phase 1 = encode + show, phase 2 = increment
+let pendingPhase2 = null;
+// pendingPhase2 = { ch, code, isNew, leaf }
+
+function setQueueHint(msg) {
+  const el = document.getElementById('queue-hint');
+  if (el) el.innerHTML = msg;
+}
+const HINT_ADD  = 'Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to add next character';
+const HINT_SWAP = 'Press <kbd style="background:#2a2a38;border:1px solid #555;border-radius:4px;padding:1px 6px;font-family:monospace">Space</kbd> to apply swap &amp; increment';
 
 function mkNode(sym, w, ord) {
   const n = { id: nodes.length, sym, w, ord, parent: null, left: null, right: null, alive: true };
@@ -381,8 +355,8 @@ function mkNode(sym, w, ord) {
 
 function initTree() {
   nodes = []; symMap = {}; inputStr = ''; encodedBits = '';
-  encodedLog = [];
-  logLines = []; swappedNodes = new Set();
+  encodedLog = []; logLines = []; swappedNodes = new Set();
+  pendingPhase2 = null;
   nextOrd = 512;
   nytNode = mkNode(null, 0, nextOrd--);
   root = nytNode;
@@ -415,32 +389,22 @@ function findSwapTarget(node) {
   return nodes.filter(n =>
     n.alive && n.w === node.w && n !== node && n !== nytNode &&
     !isAncestor(n, node) && !isAncestor(node, n) &&
-    nodeDepth(n) <= nd   // only swap up or same depth — never push a node deeper
+    nodeDepth(n) <= nd
   ).sort((a, b) => b.ord - a.ord)[0] || null;
 }
 
 function swapNodes(a, b) {
   if (a === b || isAncestor(a, b) || isAncestor(b, a)) return;
-  // Only highlight the displaced node (b=target), not the incrementing node (a=cur)
   swappedNodes.add(b.id);
-
   const pa = a.parent, pb = b.parent;
-
-  // Save original slot positions BEFORE modifying (avoids bug when pa===pb)
   const aWasLeft = pa && pa.left === a;
   const bWasLeft = pb && pb.left === b;
-
-  // Swap order values
   const tmpOrd = a.ord; a.ord = b.ord; b.ord = tmpOrd;
-
-  // Rewire parent pointers
   if (pa) { if (aWasLeft) pa.left = b; else pa.right = b; }
   if (pb) { if (bWasLeft) pb.left = a; else pb.right = a; }
-  a.parent = pb;
-  b.parent = pa;
+  a.parent = pb; b.parent = pa;
   if (a === root) root = b;
   else if (b === root) root = a;
-
   logLines.push(`  <span class="lo-swap">⇄ swap</span> ${nodeLabel(a)} ↔ ${nodeLabel(b)}`);
 }
 
@@ -463,31 +427,42 @@ function nodeLabel(n) {
   return `[INT ${n.w}]`;
 }
 
-function processChar(ch) {
+function enforceDisplay(n) {
+  if (!n || !n.left || !n.right) return;
+  const l = n.left, r = n.right;
+  let doSwap = false;
+  if      (r === nytNode)                doSwap = true;
+  else if (l === nytNode)                doSwap = false;
+  else if (l.w > r.w)                    doSwap = true;
+  else if (l.w === r.w && l.ord > r.ord) doSwap = true;
+  if (doSwap) { n.left = r; n.right = l; }
+  enforceDisplay(n.left);
+  enforceDisplay(n.right);
+}
+
+// ── Phase 1: insert node / encode path, show tree, wait for Space ──
+function processChar_phase1(ch) {
   swappedNodes = new Set();
   logLines = [];
   logLines.push(`▶ <span class="lo-char">${ch === ' ' ? '␣' : ch}</span>`);
-  let code = '';
 
   if (symMap[ch]) {
-    // Existing char: get code from CURRENT tree (before update) — Vitter rule
-    code = getCode(symMap[ch]);
+    // Existing char — just read the code, do NOT increment yet
+    const code = getCode(symMap[ch]);
     logLines.push(`  Existing → code: <span class="lo-code">${code || '(root)'}</span>`);
-    incrementNode(symMap[ch]);
-    enforceDisplay(root);
-    encodedBits += code;
-    encodedLog.push({ ch, isNew: false, pathBits: code });
-
+    logLines.push(`  <span style="color:var(--text2)">→ Space to apply swap &amp; increment</span>`);
+    pendingPhase2 = { ch, code, isNew: false, leaf: symMap[ch] };
   } else {
-    // New char: Vitter rule — encode using nytPath BEFORE tree changes
-    const nytPathEncoded = getCode(nytNode);
-    const ascii = ch.charCodeAt(0).toString(2).padStart(8, '0');
-    code = nytPathEncoded + ascii;
+    // New char — insert node into tree, read NYT path, do NOT increment yet
+    const nytCode = getCode(nytNode);
+    const ascii   = ch.charCodeAt(0).toString(2).padStart(8, '0');
+    const code    = nytCode + ascii;
 
-    // Now expand NYT and update tree
-    const oldNYT = nytNode;
+    logLines.push(`  New → NYT:<span class="lo-code">${nytCode || '(ε)'}</span> + <span class="lo-code">${ascii}</span>`);
+
+    const oldNYT    = nytNode;
     const oldParent = oldNYT.parent;
-    oldNYT.alive = false;
+    oldNYT.alive    = false;
 
     const internal = mkNode(null, 0, nextOrd--);
     const newNYT   = mkNode(null, 0, nextOrd--);
@@ -499,44 +474,46 @@ function processChar(ch) {
     leaf.parent    = internal;
 
     if (oldParent) {
-      oldParent.left = internal;
-      internal.parent = oldParent;
+      oldParent.left    = internal;
+      internal.parent   = oldParent;
     } else {
       root = internal;
     }
 
-    nytNode = newNYT;
+    nytNode  = newNYT;
     symMap[ch] = leaf;
-    logLines.push(`  Split NYT → [e0 | '${ch === ' ' ? '␣' : ch}']`);
 
-    incrementNode(leaf);
     enforceDisplay(root);
 
-    // NYT path AFTER update+enforce — shown in log to match visual tree
-    const nytPathDisplay = getCode(nytNode);
-    logLines.push(`  New → NYT:<span class="lo-code">${nytPathDisplay || '(ε)'}</span> + ASCII:<span class="lo-code">${ascii}</span>`);
+    logLines.push(`  Split NYT → [e0 | '${ch === ' ' ? '␣' : ch}']`);
+    logLines.push(`  <span style="color:var(--text2)">→ Space to apply swap &amp; increment</span>`);
 
-    encodedBits += code;
-    // encodedLog stores display path (after enforce) so bitstream matches visual tree
-    encodedLog.push({ ch, isNew: true, nytPath: nytPathDisplay, ascii8: ascii });
+    pendingPhase2 = { ch, code, isNew: true, leaf };
   }
-
-  inputStr += ch;
-  logLines.push(`  Bits: <span class="lo-code">${code}</span>`);
 }
 
-// Display order: higher weight → right; higher ord → right (tie); NYT always left
-function enforceDisplay(n) {
-  if (!n || !n.left || !n.right) return;
-  const l = n.left, r = n.right;
-  let doSwap = false;
-  if      (r === nytNode)                          doSwap = true;
-  else if (l === nytNode)                          doSwap = false;
-  else if (l.w > r.w)                              doSwap = true;
-  else if (l.w === r.w && l.ord > r.ord)           doSwap = true;
-  if (doSwap) { n.left = r; n.right = l; }
-  enforceDisplay(n.left);
-  enforceDisplay(n.right);
+// ── Phase 2: run increment (swaps + weights), finalize encoding ──
+function processChar_phase2() {
+  if (!pendingPhase2) return;
+  const { ch, code, isNew, leaf } = pendingPhase2;
+  pendingPhase2 = null;
+
+  swappedNodes = new Set();
+  // keep logLines from phase1, append phase2 entries
+  logLines.push(`  — applying increment —`);
+
+  incrementNode(leaf);
+  enforceDisplay(root);
+
+  // commit to encoded output
+  encodedBits += code;
+  if (isNew) {
+    encodedLog.push({ ch, isNew: true, nytPath: code.slice(0, code.length - 8), ascii8: code.slice(-8) });
+  } else {
+    encodedLog.push({ ch, isNew: false, pathBits: code });
+  }
+  inputStr += ch;
+  logLines.push(`  Bits: <span class="lo-code">${code}</span>`);
 }
 
 function getCurrentCodes() {
@@ -573,12 +550,10 @@ function computeLayout(rootNode) {
     if (n.right) lay(n.right, x + sp, y + 76, sp * 0.54);
   }
   const sp = Math.min(W / 2.6, 230);
-  // Ký tự đầu tiên chưa vào: cây chỉ có e0, vẽ hơi lệch trái để giống hình sách
   if (!rootNode.left && !rootNode.right) {
-    // Vẽ root giả ở trên, e0 ở dưới trái (nhánh 0)
     const fakeRootX = W / 2, fakeRootY = 46;
     const e0X = W/2 - 60, e0Y = 46 + 76;
-    pos['_fakeroot'] = {x: fakeRootX, y: fakeRootY, node: {id:'_fakeroot', sym:null, weight:null, order:null, left: rootNode, right: null, parent: null, _fake: true}};
+    pos['_fakeroot'] = {x: fakeRootX, y: fakeRootY, node: {id:'_fakeroot', sym:null, w:null, ord:null, left: rootNode, right: null, parent: null, _fake: true}};
     pos[rootNode.id] = {x: e0X, y: e0Y, node: rootNode};
     return pos;
   }
@@ -609,16 +584,12 @@ function startAnim(newLayout) {
       const f = frames[id];
       interp[id] = { x: f.fromX+(f.toX-f.fromX)*e, y: f.fromY+(f.toY-f.fromY)*e, node: f.node, alpha: f.isNew ? e : 1 };
     }
-    // edges
     for (const id in interp) {
       const {x, y, node, alpha} = interp[id];
       for (const [child, lbl] of [[node.left,'0'],[node.right,'1']]) {
-        if (child && interp[child.id]) {
-          drawEdge(x, y, interp[child.id].x, interp[child.id].y, lbl, Math.min(alpha, interp[child.id].alpha));
-        }
+        if (child && interp[child.id]) drawEdge(x, y, interp[child.id].x, interp[child.id].y, lbl, Math.min(alpha, interp[child.id].alpha));
       }
     }
-    // move arrows
     if (t > .05 && t < .95) {
       for (const id in frames) {
         if (String(frames[id].node.id).startsWith('_')) continue;
@@ -627,7 +598,6 @@ function startAnim(newLayout) {
         if (Math.sqrt(dx*dx+dy*dy) > 28 && !f.isNew) drawArrow(f.fromX,f.fromY,f.toX,f.toY,interp[id].x,interp[id].y,e);
       }
     }
-    // nodes (skip fake root)
     for (const id in interp) {
       const {x,y,node,alpha} = interp[id];
       if (node._fake) continue;
@@ -656,9 +626,7 @@ function drawArrow(fx,fy,tx,ty,cx,cy,t) {
   const nx=dx/d,ny=dy/d;
   ctx.globalAlpha=0.6*Math.sin(Math.PI*t); ctx.fillStyle='#ff6b9d';
   ctx.beginPath();
-  ctx.moveTo(cx+nx*10,cy+ny*10);
-  ctx.lineTo(cx-ny*5,cy+nx*5);
-  ctx.lineTo(cx+ny*5,cy-nx*5);
+  ctx.moveTo(cx+nx*10,cy+ny*10); ctx.lineTo(cx-ny*5,cy+nx*5); ctx.lineTo(cx+ny*5,cy-nx*5);
   ctx.closePath(); ctx.fill();
   ctx.restore();
 }
@@ -678,27 +646,23 @@ function drawEdge(x1,y1,x2,y2,lbl,alpha) {
 
 function drawNode(x, y, node) {
   const R=22;
-  const isNYT = (node === nytNode);
-  const isLeaf = (node.sym !== null);
+  const isNYT    = (node === nytNode);
+  const isLeaf   = (node.sym !== null);
   const wasSwapped = swappedNodes.has(node.id);
-
   let fill, stroke, lw;
   if (isNYT)       { fill='#2a1a00'; stroke='#ff9f43'; lw=2.5; }
   else if (isLeaf) { fill='#0a3028'; stroke=wasSwapped?'#ff6b9d':'#5DCAA5'; lw=wasSwapped?2.5:2; }
   else             { fill='#1e1a40'; stroke=wasSwapped?'#ff6b9d':'#AFA9EC'; lw=wasSwapped?2.5:1.2; }
-
   ctx.beginPath(); ctx.arc(x,y,R,0,Math.PI*2);
   ctx.fillStyle=fill; ctx.fill();
   ctx.strokeStyle=stroke; ctx.lineWidth=lw; ctx.stroke();
   ctx.textAlign='center'; ctx.textBaseline='middle';
-
-  // order number (small, top-right)
-  
-
+  ctx.font='400 9px monospace'; ctx.fillStyle='#666688';
+  ctx.fillText(node.ord, x+16, y-16);
   if (isNYT) {
-    ctx.font='700 15px monospace'; ctx.fillStyle='#ff9f43';
+    ctx.font='700 11px monospace'; ctx.fillStyle='#ff9f43';
     ctx.fillText('NYT', x, y-5);
-    ctx.font='400 13px monospace'; ctx.fillStyle='#cc7a30';
+    ctx.font='400 10px monospace'; ctx.fillStyle='#cc7a30';
     ctx.fillText('e0', x, y+7);
   } else if (isLeaf) {
     ctx.font='700 19px monospace'; ctx.fillStyle='#5DCAA5';
@@ -708,15 +672,11 @@ function drawNode(x, y, node) {
   } else {
     ctx.font='600 20px monospace'; ctx.fillStyle='#AFA9EC';
     ctx.fillText(node.w, x, y);
-
   }
 }
 
 function getDepth(n) { if(!n)return 0; return 1+Math.max(getDepth(n.left),getDepth(n.right)); }
-
-function renderTree() {
-  startAnim(computeLayout(root));
-}
+function renderTree() { startAnim(computeLayout(root)); }
 
 // ═══════════════════════════════════════════════════════
 //  UI UPDATE
@@ -733,7 +693,6 @@ function update() {
   const saved = rawBits - huffBits;
   const ratio = rawBits > 0 ? (saved/rawBits*100) : 0;
 
-  // string display
   const sd = document.getElementById('string-display');
   const disp = inputStr.length>80 ? inputStr.slice(-80) : inputStr;
   const spfx = inputStr.length>80 ? '<span style="color:var(--text2)">… </span>' : '';
@@ -741,20 +700,17 @@ function update() {
     `<span class="${i===disp.length-1&&inputStr.length>0?'ch-new':'ch'}">${c===' '?'&nbsp;':c}</span>`
   ).join('');
 
-  // freq chips
   document.getElementById('freq-table').innerHTML = entries.map(([ch,f],i)=>{
     const cls = i===0?'top1':i===1?'top2':i===2?'top3':'';
     return `<div class="freq-chip ${cls}"><span class="ch">${ch===' '?'␣':ch}</span><span class="cnt">×${f}</span><span class="code">${codes[ch]||''}</span></div>`;
   }).join('');
 
-  // log
   const log = document.getElementById('step-log');
   if (logLines.length) {
     log.innerHTML = logLines.map(l=>`<div class="log-entry">${l}</div>`).join('');
     log.scrollTop = log.scrollHeight;
   }
 
-  // bits
   if (total === 0) {
     const ph = '<span style="color:var(--text2);font-size:11px">—</span>';
     document.getElementById('ascii-bits').innerHTML = ph;
@@ -763,13 +719,12 @@ function update() {
     document.getElementById('huff-len').textContent = '0 bits';
   } else {
     document.getElementById('ascii-bits').innerHTML = makeAsciiHTML(inputStr);
-    document.getElementById('huff-bits').innerHTML = makeHuffHTML(encodedBits, entries.map(([ch])=>ch));
+    document.getElementById('huff-bits').innerHTML = makeHuffHTML();
     document.getElementById('ascii-len').textContent = rawBits + ' bits';
     document.getElementById('huff-len').textContent = huffBits + ' bits';
     ['ascii-bits','huff-bits'].forEach(id=>{const el=document.getElementById(id);el.scrollTop=el.scrollHeight;});
   }
 
-  // stats
   document.getElementById('s-total').textContent = total;
   document.getElementById('s-unique').textContent = Object.keys(freqMap).length;
   document.getElementById('s-raw').textContent = rawBits;
@@ -777,7 +732,6 @@ function update() {
   document.getElementById('s-save').textContent = saved>0?saved+' bits':'—';
   document.getElementById('s-ratio').textContent = rawBits>0?ratio.toFixed(1)+'%':'—';
 
-  // code table
   document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
     const code = codes[ch]||'?';
     const node = symMap[ch];
@@ -803,15 +757,13 @@ function makeAsciiHTML(str) {
   const pfx=str.length>80?'<span style="color:var(--text2)">…</span>':'';
   return pfx+src.split('').map(c=>`<span class="${cm[c]}">${c.charCodeAt(0).toString(2).padStart(8,'0')}</span><span class="sep"> </span>`).join('');
 }
-function makeHuffHTML(bits, chars) {
+
+function makeHuffHTML() {
   if (!encodedLog.length) return '<span style="color:var(--text2);font-size:11px">—</span>';
   const uniq = [...new Set(inputStr.split(''))];
   const cm = {}; uniq.forEach((c,i) => cm[c] = COLOURS[i % COLOURS.length]);
-
-  // Trim to last MAX_BITS
   const MAX_BITS = 300;
-  let startIdx = 0;
-  let cumBits = 0;
+  let startIdx = 0, cumBits = 0;
   for (const e of encodedLog) cumBits += e.isNew ? (e.nytPath.length + 8) : e.pathBits.length;
   if (cumBits > MAX_BITS) {
     let trim = cumBits - MAX_BITS;
@@ -821,20 +773,15 @@ function makeHuffHTML(bits, chars) {
       startIdx++;
     }
   }
-
   const pfx = startIdx > 0 ? '<span style="color:var(--text2)">… </span>' : '';
   let html = pfx;
   for (let i = startIdx; i < encodedLog.length; i++) {
     const entry = encodedLog[i];
     const cls = cm[entry.ch] || 'b0';
     if (entry.isNew) {
-      // New char: NYT path (muted) + ASCII 8 bits (bright)
-      if (entry.nytPath) {
-        html += `<span class="${cls}" style="opacity:0.45" title="NYT path">${entry.nytPath}</span>`;
-      }
+      if (entry.nytPath) html += `<span class="${cls}" style="opacity:0.45" title="NYT path">${entry.nytPath}</span>`;
       html += `<span class="${cls}" title="ASCII(${entry.ch})">${entry.ascii8}</span>`;
     } else {
-      // Existing char: just the path code
       html += `<span class="${cls}" title="${entry.ch} path">${entry.pathBits}</span>`;
     }
     html += '<span class="sep"> </span>';
@@ -850,82 +797,114 @@ let queue=[], activeSampleBtn=null;
 function renderQueue() {
   const panel=document.getElementById('queue-panel');
   const container=document.getElementById('queue-chars');
-  if(!queue.length){
+  if(!queue.length && !pendingPhase2){
     panel.classList.remove('visible');
     if(activeSampleBtn){activeSampleBtn.classList.remove('active');activeSampleBtn=null;}
     return;
   }
   panel.classList.add('visible');
   container.innerHTML=queue.map((c,i)=>`<div class="q-char ${i===0?'next':''}" id="qc-${i}">${c===' '?'␣':c}</div>`).join('');
+  setQueueHint(pendingPhase2 ? HINT_SWAP : HINT_ADD);
 }
 
-function dequeueOne() {
-  if(!queue.length)return;
-  const el=document.getElementById('qc-0');
-  const doIt=()=>{ const c=queue.shift(); processChar(c); update(); renderQueue(); };
-  if(el){ el.classList.add('gone'); setTimeout(doIt,200); } else doIt();
-}
-
-document.addEventListener('keydown',e=>{
-  if(e.code==='Space'){
-    const active=document.activeElement;
-    if(active===document.getElementById('char-input')||active===document.getElementById('lib-str')||active===document.getElementById('lib-name'))return;
-    e.preventDefault();
-    dequeueOne();
+function spacePressed() {
+  if (pendingPhase2) {
+    // Phase 2: apply increment & swaps
+    processChar_phase2();
+    update();
+    renderQueue();
+    return;
   }
-  if(e.key==='Enter'&&document.activeElement===document.getElementById('char-input')) addChar();
+  if (!queue.length) return;
+  // Phase 1: dequeue next char, insert into tree
+  const el = document.getElementById('qc-0');
+  const doIt = () => {
+    const c = queue.shift();
+    processChar_phase1(c);
+    update();
+    renderQueue();
+  };
+  if (el) { el.classList.add('gone'); setTimeout(doIt, 200); } else doIt();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space') {
+    const active = document.activeElement;
+    if (active === document.getElementById('char-input') ||
+        active === document.getElementById('lib-str') ||
+        active === document.getElementById('lib-name')) return;
+    e.preventDefault();
+    spacePressed();
+  }
+  if (e.key === 'Enter' && document.activeElement === document.getElementById('char-input')) addChar();
 });
 
-const charInput=document.getElementById('char-input');
-function addChar(){
-  const c=charInput.value; if(!c)return;
-  processChar(c); update();
-  charInput.value=''; charInput.focus();
-}
-function addSample(str,btn){
-  resetAll(); queue=str.split('');
-  activeSampleBtn=btn; btn.classList.add('active');
-  renderQueue(); charInput.blur();
-}
-function resetAll(){
-  if(activeSampleBtn){activeSampleBtn.classList.remove('active');activeSampleBtn=null;}
-  queue=[];
-  initTree(); prevLayout={};
+const charInput = document.getElementById('char-input');
+
+function addChar() {
+  if (pendingPhase2) {
+    // Complete pending phase 2 first
+    processChar_phase2();
+    update();
+    renderQueue();
+    return;
+  }
+  const c = charInput.value; if (!c) return;
+  processChar_phase1(c);
+  update();
   renderQueue();
-  document.getElementById('step-log').innerHTML='<span style="color:var(--text2);font-size:13px">— step log will appear here —</span>';
-  document.getElementById('string-display').innerHTML='';
-  document.getElementById('freq-table').innerHTML='';
-  const ph='<span style="color:var(--text2);font-size:11px">—</span>';
-  document.getElementById('ascii-bits').innerHTML=ph;
-  document.getElementById('huff-bits').innerHTML=ph;
-  document.getElementById('ascii-len').textContent='0 bits';
-  document.getElementById('huff-len').textContent='0 bits';
-  document.getElementById('s-total').textContent='0';
-  document.getElementById('s-unique').textContent='0';
-  document.getElementById('s-raw').textContent='0';
-  document.getElementById('s-huff').textContent='0';
-  document.getElementById('s-save').textContent='—';
-  document.getElementById('s-ratio').textContent='—';
-  document.getElementById('code-tbody').innerHTML='';
-  // sau reset: root = nytNode (e0), vẽ lại cây ban đầu
+  charInput.value = '';
+  charInput.focus();
+}
+
+function addSample(str, btn) {
+  resetAll();
+  queue = str.split('');
+  activeSampleBtn = btn;
+  btn.classList.add('active');
+  renderQueue();
+  charInput.blur();
+}
+
+function resetAll() {
+  if (activeSampleBtn) { activeSampleBtn.classList.remove('active'); activeSampleBtn = null; }
+  queue = [];
+  initTree(); prevLayout = {};
+  renderQueue();
+  setQueueHint(HINT_ADD);
+  document.getElementById('step-log').innerHTML = '<span style="color:var(--text2);font-size:13px">— step log will appear here —</span>';
+  document.getElementById('string-display').innerHTML = '';
+  document.getElementById('freq-table').innerHTML = '';
+  const ph = '<span style="color:var(--text2);font-size:11px">—</span>';
+  document.getElementById('ascii-bits').innerHTML = ph;
+  document.getElementById('huff-bits').innerHTML = ph;
+  document.getElementById('ascii-len').textContent = '0 bits';
+  document.getElementById('huff-len').textContent = '0 bits';
+  document.getElementById('s-total').textContent = '0';
+  document.getElementById('s-unique').textContent = '0';
+  document.getElementById('s-raw').textContent = '0';
+  document.getElementById('s-huff').textContent = '0';
+  document.getElementById('s-save').textContent = '—';
+  document.getElementById('s-ratio').textContent = '—';
+  document.getElementById('code-tbody').innerHTML = '';
   renderTree();
   charInput.focus();
 }
 
-window.addEventListener('resize',()=>renderTree());
+window.addEventListener('resize', () => renderTree());
 
 // ═══════════════════════════════════════════════════════
 //  LIBRARY
 // ═══════════════════════════════════════════════════════
-const LIB_KEY='huffman_vitter_lib';
-let library=[], editingId=null;
-function libLoad(){ try{library=JSON.parse(localStorage.getItem(LIB_KEY))||[];}catch{library=[];} }
-function libSaveStorage(){ try{localStorage.setItem(LIB_KEY,JSON.stringify(library));}catch{} }
-function libRender(){
-  document.getElementById('lib-count').textContent=library.length;
-  const el=document.getElementById('lib-items');
-  if(!library.length){el.innerHTML='<div class="lib-empty">No strings saved yet.</div>';return;}
-  el.innerHTML=library.map((item,i)=>`
+const LIB_KEY = 'huffman_vitter_lib';
+let library = [], editingId = null;
+function libLoad() { try { library = JSON.parse(localStorage.getItem(LIB_KEY)) || []; } catch { library = []; } }
+function libSaveStorage() { try { localStorage.setItem(LIB_KEY, JSON.stringify(library)); } catch {} }
+function libRender() {
+  document.getElementById('lib-count').textContent = library.length;
+  const el = document.getElementById('lib-items');
+  if (!library.length) { el.innerHTML = '<div class="lib-empty">No strings saved yet.</div>'; return; }
+  el.innerHTML = library.map((item, i) => `
     <div class="lib-item" style="${editingId===item.id?'border-color:var(--purple)':''}">
       <div class="lib-item-info">
         <div class="lib-item-name">${escH(item.name)}</div>
@@ -938,65 +917,65 @@ function libRender(){
       </div>
     </div>`).join('');
 }
-function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function libPreview(){
-  const s=document.getElementById('lib-str').value;
-  document.getElementById('lib-len').textContent=s.length;
-  document.getElementById('lib-uniq').textContent=new Set(s.split('')).size;
+function escH(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function libPreview() {
+  const s = document.getElementById('lib-str').value;
+  document.getElementById('lib-len').textContent = s.length;
+  document.getElementById('lib-uniq').textContent = new Set(s.split('')).size;
 }
-function libSave(){
-  const name=document.getElementById('lib-name').value.trim();
-  const str=document.getElementById('lib-str').value;
-  if(!str){showToast('String cannot be empty!');return;}
-  const finalName=name||('String '+(library.length+1));
-  if(editingId!==null){
-    const idx=library.findIndex(x=>x.id===editingId);
-    if(idx>=0){library[idx].name=finalName;library[idx].str=str;}
-    editingId=null; showToast('Updated: '+finalName);
+function libSave() {
+  const name = document.getElementById('lib-name').value.trim();
+  const str  = document.getElementById('lib-str').value;
+  if (!str) { showToast('String cannot be empty!'); return; }
+  const finalName = name || ('String ' + (library.length + 1));
+  if (editingId !== null) {
+    const idx = library.findIndex(x => x.id === editingId);
+    if (idx >= 0) { library[idx].name = finalName; library[idx].str = str; }
+    editingId = null; showToast('Updated: ' + finalName);
   } else {
-    library.push({id:Date.now(),name:finalName,str});
-    showToast('Saved: '+finalName);
+    library.push({ id: Date.now(), name: finalName, str });
+    showToast('Saved: ' + finalName);
   }
   libSaveStorage(); libRender(); libClearComposer();
 }
-function libClearComposer(){
-  document.getElementById('lib-name').value='';
-  document.getElementById('lib-str').value='';
-  document.getElementById('lib-len').textContent='0';
-  document.getElementById('lib-uniq').textContent='0';
-  editingId=null; libRender();
+function libClearComposer() {
+  document.getElementById('lib-name').value = '';
+  document.getElementById('lib-str').value = '';
+  document.getElementById('lib-len').textContent = '0';
+  document.getElementById('lib-uniq').textContent = '0';
+  editingId = null; libRender();
 }
-function libEdit(i){
-  const item=library[i];
-  document.getElementById('lib-name').value=item.name;
-  document.getElementById('lib-str').value=item.str;
-  editingId=item.id; libPreview(); libRender();
+function libEdit(i) {
+  const item = library[i];
+  document.getElementById('lib-name').value = item.name;
+  document.getElementById('lib-str').value = item.str;
+  editingId = item.id; libPreview(); libRender();
   document.getElementById('lib-str').focus();
 }
-function libDelete(i){
-  const name=library[i].name;
-  if(editingId===library[i].id)libClearComposer();
-  library.splice(i,1); libSaveStorage(); libRender();
-  showToast('Deleted: '+name);
+function libDelete(i) {
+  const name = library[i].name;
+  if (editingId === library[i].id) libClearComposer();
+  library.splice(i, 1); libSaveStorage(); libRender();
+  showToast('Deleted: ' + name);
 }
-function libUse(i){ addSample(library[i].str,{classList:{add:()=>{},remove:()=>{}}}); showToast('Using: '+library[i].name); }
-function libUseComposer(){
-  const str=document.getElementById('lib-str').value;
-  if(!str){showToast('No string entered!');return;}
-  addSample(str,{classList:{add:()=>{},remove:()=>{}}});
+function libUse(i) { addSample(library[i].str, {classList:{add:()=>{},remove:()=>{}}}); showToast('Using: ' + library[i].name); }
+function libUseComposer() {
+  const str = document.getElementById('lib-str').value;
+  if (!str) { showToast('No string entered!'); return; }
+  addSample(str, {classList:{add:()=>{},remove:()=>{}}});
 }
-function toggleLib(){
-  const p=document.getElementById('lib-panel');
+function toggleLib() {
+  const p = document.getElementById('lib-panel');
   p.classList.toggle('open');
-  if(p.classList.contains('open'))libRender();
+  if (p.classList.contains('open')) libRender();
 }
 
-let toastTimer=null;
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  if(toastTimer)clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 // ═══════════════════════════════════════════════════════
