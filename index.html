@@ -296,7 +296,7 @@ td.ord-col { color:var(--blue); }
     <div class="stat-card orange"><div class="lbl">Ratio</div><div class="val" id="s-ratio">—</div></div>
   </div>
 
-  <div id="code-table-wrap">
+  <!-- <div id="code-table-wrap">
     <div class="panel-title" style="margin-bottom:9px">Current codebook &amp; order</div>
     <table>
       <thead><tr>
@@ -304,7 +304,7 @@ td.ord-col { color:var(--blue); }
       </tr></thead>
       <tbody id="code-tbody"></tbody>
     </table>
-  </div>
+  </div> -->
 
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="border-color:var(--nyt);background:var(--nyt-fill)"></div>NYT (Not Yet Transmitted)</div>
@@ -331,6 +331,7 @@ let encodedBits = '';
 let encodedLog = [];
 let logLines = [];
 let swappedNodes = new Set();
+let swapPairs = []; // [{aId, bId}] — pairs that were swapped, for drawing ⇄ arrows
 const COLOURS = ['b0','b1','b2','b3','b4','b5','b6','b7','b8','b9'];
 
 // ── 2-phase state ──────────────────────────────────────
@@ -355,7 +356,7 @@ function mkNode(sym, w, ord) {
 
 function initTree() {
   nodes = []; symMap = {}; inputStr = ''; encodedBits = '';
-  encodedLog = []; logLines = []; swappedNodes = new Set();
+  encodedLog = []; logLines = []; swappedNodes = new Set(); swapPairs = [];
   pendingPhase2 = null;
   nextOrd = 512;
   nytNode = mkNode(null, 0, nextOrd--);
@@ -396,6 +397,7 @@ function findSwapTarget(node) {
 function swapNodes(a, b) {
   if (a === b || isAncestor(a, b) || isAncestor(b, a)) return;
   swappedNodes.add(b.id);
+  swapPairs.push({ aId: a.id, bId: b.id });
   const pa = a.parent, pb = b.parent;
   const aWasLeft = pa && pa.left === a;
   const bWasLeft = pb && pb.left === b;
@@ -442,12 +444,12 @@ function enforceDisplay(n) {
 
 // ── Phase 1: insert node / encode path, show tree, wait for Space ──
 function processChar_phase1(ch) {
-  swappedNodes = new Set();
+  swappedNodes = new Set(); swapPairs = [];
   logLines = [];
   logLines.push(`▶ <span class="lo-char">${ch === ' ' ? '␣' : ch}</span>`);
 
   if (symMap[ch]) {
-    // Existing char — just read the code, do NOT increment yet
+    // Existing char — read code only, no weight/swap yet
     const code = getCode(symMap[ch]);
     logLines.push(`  Existing → code: <span class="lo-code">${code || '(root)'}</span>`);
     logLines.push(`  <span style="color:var(--text2)">→ Space to apply swap &amp; increment</span>`);
@@ -474,8 +476,10 @@ function processChar_phase1(ch) {
     leaf.parent    = internal;
 
     if (oldParent) {
-      oldParent.left    = internal;
-      internal.parent   = oldParent;
+      // NYT could be left or right child — check before replacing
+      if (oldParent.left === oldNYT) oldParent.left = internal;
+      else oldParent.right = internal;
+      internal.parent = oldParent;
     } else {
       root = internal;
     }
@@ -483,6 +487,7 @@ function processChar_phase1(ch) {
     nytNode  = newNYT;
     symMap[ch] = leaf;
 
+    // Insert only — no weight update, no swap yet
     enforceDisplay(root);
 
     logLines.push(`  Split NYT → [e0 | '${ch === ' ' ? '␣' : ch}']`);
@@ -498,9 +503,8 @@ function processChar_phase2() {
   const { ch, code, isNew, leaf } = pendingPhase2;
   pendingPhase2 = null;
 
-  swappedNodes = new Set();
-  // keep logLines from phase1, append phase2 entries
-  logLines.push(`  — applying increment —`);
+  swappedNodes = new Set(); swapPairs = [];
+  logLines.push(`  — applying swap &amp; increment —`);
 
   incrementNode(leaf);
   enforceDisplay(root);
@@ -536,7 +540,7 @@ const canvas = document.getElementById('tree-canvas');
 const ctx = canvas.getContext('2d');
 let prevLayout = {};
 let animRAF = null;
-const ANIM_MS = 400;
+const ANIM_MS = 700;
 function easeIO(t) { return t<.5?2*t*t:-1+(4-2*t)*t; }
 
 function computeLayout(rootNode) {
@@ -605,6 +609,15 @@ function startAnim(newLayout) {
       drawNode(x, y, node);
       ctx.globalAlpha = 1;
     }
+    // Draw swap ⇄ arrows between swapped node pairs
+    if (swapPairs.length > 0) {
+      const swapAlpha = t < 0.5 ? t * 2 : (1 - t) * 2; // fade in then out
+      for (const {aId, bId} of swapPairs) {
+        if (interp[aId] && interp[bId]) {
+          drawSwapArrow(interp[aId].x, interp[aId].y, interp[bId].x, interp[bId].y, swapAlpha);
+        }
+      }
+    }
     if (t < 1) animRAF = requestAnimationFrame(tick);
     else {
       prevLayout = {};
@@ -628,6 +641,61 @@ function drawArrow(fx,fy,tx,ty,cx,cy,t) {
   ctx.beginPath();
   ctx.moveTo(cx+nx*10,cy+ny*10); ctx.lineTo(cx-ny*5,cy+nx*5); ctx.lineTo(cx+ny*5,cy-nx*5);
   ctx.closePath(); ctx.fill();
+  ctx.restore();
+}
+
+// Draw a bold ⇄ swap indicator between two nodes
+function drawSwapArrow(x1, y1, x2, y2, alpha) {
+  if (alpha <= 0) return;
+  const dx = x2-x1, dy = y2-y1, d = Math.sqrt(dx*dx+dy*dy);
+  if (d < 1) return;
+  const nx = dx/d, ny = dy/d;
+  const R = 26; // clear the node circles
+  const sx = x1 + nx*R, sy = y1 + ny*R;
+  const ex = x2 - nx*R, ey = y2 - ny*R;
+  const mx = (sx+ex)/2, my = (sy+ey)/2;
+  // offset perpendicular so the two arrows don't overlap
+  const ox = -ny * 7, oy = nx * 7;
+
+  ctx.save();
+  ctx.globalAlpha = alpha * 0.9;
+
+  // Arrow A→B (offset +)
+  ctx.strokeStyle = '#ff6b9d'; ctx.lineWidth = 2.5;
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(sx+ox, sy+oy); ctx.lineTo(ex+ox, ey+oy); ctx.stroke();
+  // arrowhead at B
+  ctx.fillStyle = '#ff6b9d';
+  ctx.beginPath();
+  ctx.moveTo(ex+ox+nx*8, ey+oy+ny*8);
+  ctx.lineTo(ex+ox-ny*5-nx*6, ey+oy+nx*5-ny*6);
+  ctx.lineTo(ex+ox+ny*5-nx*6, ey+oy-nx*5-ny*6);
+  ctx.closePath(); ctx.fill();
+
+  // Arrow B→A (offset -)
+  ctx.beginPath();
+  ctx.moveTo(ex-ox, ey-oy); ctx.lineTo(sx-ox, sy-oy); ctx.stroke();
+  // arrowhead at A
+  ctx.beginPath();
+  ctx.moveTo(sx-ox-nx*8, sy-oy-ny*8);
+  ctx.lineTo(sx-ox+ny*5+nx*6, sy-oy-nx*5+ny*6);
+  ctx.lineTo(sx-ox-ny*5+nx*6, sy-oy+nx*5+ny*6);
+  ctx.closePath(); ctx.fill();
+
+  // Label ⇄ in the middle
+  ctx.globalAlpha = alpha;
+  ctx.font = 'bold 13px sans-serif';
+  ctx.fillStyle = '#ff6b9d';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  // white bg behind text
+  ctx.globalAlpha = alpha * 0.7;
+  ctx.fillStyle = '#0a0a0c';
+  ctx.fillRect(mx-14, my-10, 28, 20);
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = '#ff6b9d';
+  ctx.fillText('⇄', mx, my);
+
   ctx.restore();
 }
 
@@ -732,20 +800,7 @@ function update() {
   document.getElementById('s-save').textContent = saved>0?saved+' bits':'—';
   document.getElementById('s-ratio').textContent = rawBits>0?ratio.toFixed(1)+'%':'—';
 
-  document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
-    const code = codes[ch]||'?';
-    const node = symMap[ch];
-    const order = node ? node.ord : '?';
-    const barW = Math.round(f/maxFreq*100);
-    return `<tr>
-      <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
-      <td class="freq-col">${f}</td>
-      <td class="code-col">${code}</td>
-      <td>${code.length} bit</td>
-      <td class="ord-col">${order}</td>
-      <td><div class="bar" style="width:${barW}%"></div></td>
-    </tr>`;
-  }).join('');
+ 
 
   renderTree();
 }
@@ -886,7 +941,6 @@ function resetAll() {
   document.getElementById('s-huff').textContent = '0';
   document.getElementById('s-save').textContent = '—';
   document.getElementById('s-ratio').textContent = '—';
-  document.getElementById('code-tbody').innerHTML = '';
   renderTree();
   charInput.focus();
 }
