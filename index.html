@@ -296,7 +296,7 @@ td.ord-col { color:var(--blue); }
     <div class="stat-card orange"><div class="lbl">Ratio</div><div class="val" id="s-ratio">—</div></div>
   </div>
 
-  <!-- <div id="code-table-wrap">
+  <div id="code-table-wrap">
     <div class="panel-title" style="margin-bottom:9px">Current codebook &amp; order</div>
     <table>
       <thead><tr>
@@ -304,7 +304,7 @@ td.ord-col { color:var(--blue); }
       </tr></thead>
       <tbody id="code-tbody"></tbody>
     </table>
-  </div> -->
+  </div>
 
   <div class="legend">
     <div class="legend-item"><div class="legend-dot" style="border-color:var(--nyt);background:var(--nyt-fill)"></div>NYT (Not Yet Transmitted)</div>
@@ -800,7 +800,20 @@ function update() {
   document.getElementById('s-save').textContent = saved>0?saved+' bits':'—';
   document.getElementById('s-ratio').textContent = rawBits>0?ratio.toFixed(1)+'%':'—';
 
- 
+  document.getElementById('code-tbody').innerHTML = entries.map(([ch,f])=>{
+    const code = codes[ch]||'?';
+    const node = symMap[ch];
+    const order = node ? node.ord : '?';
+    const barW = Math.round(f/maxFreq*100);
+    return `<tr>
+      <td class="ch-col">${ch===' '?'&lt;SPC&gt;':ch}</td>
+      <td class="freq-col">${f}</td>
+      <td class="code-col">${code}</td>
+      <td>${code.length} bit</td>
+      <td class="ord-col">${order}</td>
+      <td><div class="bar" style="width:${barW}%"></div></td>
+    </tr>`;
+  }).join('');
 
   renderTree();
 }
@@ -810,7 +823,7 @@ function makeAsciiHTML(str) {
   const cm={}; uniq.forEach((c,i)=>cm[c]=COLOURS[i%COLOURS.length]);
   const src=str.length>80?str.slice(-80):str;
   const pfx=str.length>80?'<span style="color:var(--text2)">…</span>':'';
-  return pfx+src.split('').map(c=>`<span class="${cm[c]}">${c.charCodeAt(0).toString(2).padStart(8,'0')}</span><span class="sep"> </span>`).join('');
+  return pfx+src.split('').map(c=>`<span class="${cm[c]}">'${c===' '?'␣':c}'</span><span class="sep"> </span>`).join('');
 }
 
 function makeHuffHTML() {
@@ -835,7 +848,7 @@ function makeHuffHTML() {
     const cls = cm[entry.ch] || 'b0';
     if (entry.isNew) {
       if (entry.nytPath) html += `<span class="${cls}" style="opacity:0.45" title="NYT path">${entry.nytPath}</span>`;
-      html += `<span class="${cls}" title="ASCII(${entry.ch})">${entry.ascii8}</span>`;
+      html += `<span class="${cls}" title="${entry.ch}">'${entry.ch === ' ' ? '␣' : entry.ch}'</span>`;
     } else {
       html += `<span class="${cls}" title="${entry.ch} path">${entry.pathBits}</span>`;
     }
@@ -941,6 +954,7 @@ function resetAll() {
   document.getElementById('s-huff').textContent = '0';
   document.getElementById('s-save').textContent = '—';
   document.getElementById('s-ratio').textContent = '—';
+  document.getElementById('code-tbody').innerHTML = '';
   renderTree();
   charInput.focus();
 }
